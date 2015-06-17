@@ -1,0 +1,8 @@
+---
+
+- name: Install ansible-lint
+  command: pip install --install-option="--install-scripts=/usr/bin" ansible-lint
+  tags:
+    - build
+    - system
+    - ansible-lint

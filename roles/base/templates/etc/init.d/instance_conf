@@ -1,0 +1,61 @@
+#!/bin/bash
+#
+# instance_conf
+#
+# chkconfig: 2345 48 48
+# description:  Configures an instance if needed
+#               
+#
+### BEGIN INIT INFO
+# Provides: instance_conf
+# Required-Start: $local_fs $network set_hostname
+# Required-Stop: $local_fs $network
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Configures an instance. Requires /usr/bin/instance_conf
+# Description: Configures an instance if needed
+### END INIT INFO
+
+# source function library
+. /etc/rc.d/init.d/functions
+
+RETVAL=0
+LOGFILE=/var/log/instance_config.log
+
+
+start() {
+  if [ -f /usr/bin/instance_conf ]; then
+    if [ ! -f /{{ kenzanmedia_etc }}/instance_config_DO_NOT_REMOVE ]; then
+      /usr/bin/instance_conf > $LOGFILE 2>&1
+      if [[ $RETVAL -ne 0 ]]; then
+        touch /{{ kenzanmedia_etc }}/instance_config_DO_NOT_REMOVE
+         chattr +i /{{ kenzanmedia_etc }}/instance_config_DO_NOT_REMOVE
+      fi
+    fi
+  else
+    RETVAL=0
+  fi
+}
+
+stop () {
+  # This may do something some day
+  echo -n "PlaceHolder"
+  echo
+}
+
+case "$1" in
+        start)
+                start
+                ;;
+        stop)
+                stop
+                ;;
+        restart)
+                stop
+                start
+                ;;
+        *)
+                echo $"Usage: $0 {start|stop|restart}"
+                RETVAL=1
+esac
+exit $RETVAL
