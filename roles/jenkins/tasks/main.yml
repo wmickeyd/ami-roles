@@ -1,0 +1,39 @@
+---
+
+- name: Ensure Jenkins Yum repo present
+  get_url: url={{ jenkins_repo_url }} dest=/etc/yum.repos.d/jenkins.repo mode=0644
+  tags:
+  - system
+  - jenkins
+  - build
+
+- name: Add Jenkins repo GPG key
+  command: rpm --import {{ jenkins_repo_key_url }}
+  tags:
+  - system
+  - jenkins
+  - build
+
+- name: Ensure Jenkins installed
+  yum: name=jenkins state=present
+  tags:
+  - system
+  - jenkins
+  - build
+
+- name: Local Ansible facts
+  template: src={{ role_local_facts }}/jenkins.fact dest=/{{ role_local_facts }}/jenkins.fact owner=root group=root mode=0644
+  tags:
+  - config
+  - jenkins-config
+  - facts
+  - build
+
+- name: Nginx proxy
+  template: src=etc/nginx/conf.d/jenkins.conf dest=/etc/nginx/conf.d/jenkins.conf owner=root group=root mode=0644
+  notify:
+  - restart nginx
+  tags:
+  - config
+  - jenkins-config
+  - build

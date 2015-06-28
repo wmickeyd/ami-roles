@@ -1,0 +1,14 @@
+---
+# file: roles/oraclejdk8/vars/main.yml
+jdk_major_version: 8
+jdk_version: 8u45
+
+# Nexus location
+# Example http://repo.oneplatform.build/nexus/content/repositories/releases/oracle/jdk8/8u31/jdk8-8u31-x64.tar.gz
+jdk_url: http://repo.oneplatform.build/nexus/content/repositories/releases/oracle/jdk{{ jdk_major_version }}/{{ jdk_version }}/jdk{{ jdk_major_version }}-{{ jdk_version }}-x64.tar.gz
+
+# FS vars
+java_root: "{{ kenzanmedia_apps }}/java"
+java_home: "{{ java_root }}/jdk8"
+java_default: "{{ java_root }}/default"
+

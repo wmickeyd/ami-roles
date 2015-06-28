@@ -1,0 +1,12 @@
+---
+
+- hosts: 127.0.0.1
+  sudo: yes
+
+  vars:
+    ami_profile: tomcat7
+
+  roles:
+  - base
+  - tomcat7
+  - postrun
