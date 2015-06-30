@@ -1,0 +1,10 @@
+---
+
+- name: Install RPM Dev Tools
+  yum: name={{ item }} state=latest
+  with_items: packages
+  tags:
+    - system
+    - build
+    - rpmdevel
+

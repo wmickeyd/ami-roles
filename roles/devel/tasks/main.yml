@@ -1,0 +1,7 @@
+---
+- name: Install Development Tools
+  yum: name="@Development Tools" state=latest
+  tags:
+    - system
+    - build
+    - packages
