@@ -1,0 +1,22 @@
+---
+
+- name: Download packer
+  get_url: url={{ packer_url }} dest=/tmp/packer{{ packer_version }}.zip owner=root group=root mode=0644
+  tags:
+  - system
+  - build
+  - packer
+
+- name: Extract packer
+  command: unzip /tmp/packer{{ packer_version }}.zip -d /usr/bin chdir=/tmp
+  tags:
+  - system
+  - build
+  - packer
+
+- name: Move the other packer
+  command: mv /usr/sbin/packer /usr/sbin/packer.bak
+  tags:
+  - system
+  - build
+  - packer

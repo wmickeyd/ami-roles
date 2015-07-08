@@ -1,0 +1,7 @@
+---
+
+# Also in epel-testing
+- name: Effing package manager
+  gem: name=fpm state=latest user_install=no
+  tags:
+    - build
