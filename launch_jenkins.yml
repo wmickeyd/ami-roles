@@ -47,8 +47,9 @@
   user: ec2-user
   gather_facts: True
   roles:
-    - base
-    - jenkins
-    - postrun
+    - { role: base, ami_profile: jenkins }
+    - { role: jenkins, ami_profile: jenkins }
+    - { role: postrun, ami_profile: jenkins }
+
 
 
