@@ -1,0 +1,52 @@
+---  
+
+
+- name: "launch jenkins"
+  hosts: localhost
+  gather_facts: no
+
+  vars:
+    aws_region: us-west-2  # If not specified then the value of the EC2_REGION environment variable, if any, is used.
+
+    keyname: jenkins_access
+    instance_type: t2.medium
+    linux_ami: ami-e7527ed7
+    security_group: jenkins
+
+  vars_files:
+    - vpc_info
+
+  tasks:
+    - name: Launch jenkins instance
+      ec2:
+        key_name: "{{ keyname }}"
+        group: "{{ security_group }}"
+        instance_type: "{{ instance_type }}"
+        image: "{{ linux_ami }}"
+        wait: true
+        region: "{{ aws_region }}"
+        vpc_subnet_id: "{{ subnet_public }}"
+        assign_public_ip: yes
+        instance_tags:
+          Name: "jenkins_main"
+      register: ec2
+
+    - name: Add new instance to host group
+      add_host: hostname={{ item.public_ip }} groupname=launched ansible_ssh_user=ec2-user ansible_ssh_private_key_file=/Users/ragarwal/Documents/Kenzanmedia_myGitfork/ami-roles/"{{ keyname }}".pem
+      with_items: ec2.instances
+    - name: Wait for SSH to come up
+      wait_for: host={{ item.public_dns_name }} port=22 delay=60 timeout=320 state=started
+      with_items: ec2.instances
+
+
+- name: Configure Jenkins instance(s)
+  hosts: launched
+  sudo: True
+  user: ec2-user
+  gather_facts: True
+  roles:
+    - base
+    - jenkins
+    - postrun
+
+
