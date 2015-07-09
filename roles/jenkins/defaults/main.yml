@@ -5,6 +5,15 @@ jenkins_hostname: localhost
 jenkins_jar_location: /opt/jenkins-cli.jar
 jenkins_plugins:
   - git
+  - github-api
+  - github
+  - git-parameter
   - sonar
   - ssh
   - job-dsl
+  - chucknorris
+  - shelve-project-plugin
+  - swarm
+
+j_jobs:
+  - dsl-ami-provisioning
