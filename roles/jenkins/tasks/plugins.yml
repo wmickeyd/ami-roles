@@ -8,11 +8,19 @@
     group: jenkins
     mode: 0755
     state: directory
+  tags:
+  - config
+  - jenkins-config
+  - build
 
 - name: Update Jenkins plugin data.
   shell: >
     curl -L https://updates.jenkins-ci.org/update-center.json | sed '1d;$d' > /var/lib/jenkins/updates/default.json
     creates=/var/lib/jenkins/updates/default.json
+  tags:
+  - config
+  - jenkins-config
+  - build
 
 - name: Permissions for default.json updates info.
   file:
@@ -20,6 +28,10 @@
     owner: jenkins
     group: jenkins
     mode: 0755
+  tags:
+  - config
+  - jenkins-config
+  - build
 
 - name: Install Jenkins plugins.
   command: >
@@ -27,3 +39,15 @@
     creates=/var/lib/jenkins/plugins/{{ item }}.jpi
   with_items: jenkins_plugins
   notify: restart jenkins
+  tags:
+  - config
+  - jenkins-config
+  - build
+
+- name: restart Nginx proxy
+  notify:
+  - restart nginx
+  tags:
+  - config
+  - jenkins-config
+  - build

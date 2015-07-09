@@ -59,6 +59,11 @@
   until: "'OK' in jarfile_get.msg or 'file already exists' in jarfile_get.msg"
   retries: 5
   delay: 10
+  tags:
+  - config
+  - jenkins-config
+  - build
+
 
 # Update Jenkins and install configured plugins.
 - include: plugins.yml
