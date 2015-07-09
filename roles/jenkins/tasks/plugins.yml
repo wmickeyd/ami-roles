@@ -45,8 +45,7 @@
   - build
 
 - name: restart Nginx proxy
-  notify:
-  - restart nginx
+  command: service nginx restart
   tags:
   - config
   - jenkins-config
