@@ -1,0 +1,12 @@
+---
+
+- hosts: 127.0.0.1
+  sudo: yes
+
+  vars:
+    ami_profile: jetty8
+
+  roles:
+  - base
+  - jetty8
+  - postrun

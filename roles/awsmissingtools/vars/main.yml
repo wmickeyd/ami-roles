@@ -1,0 +1,6 @@
+---
+
+# Variables
+
+aws_missing_tools_url: https://github.com/colinbjohnson/aws-missing-tools.git
+
