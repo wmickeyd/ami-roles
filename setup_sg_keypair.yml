@@ -1,0 +1,57 @@
+---  
+
+
+- name: "setup keypair and security groups"
+  hosts: localhost
+  gather_facts: no
+
+  vars:
+    aws_region: us-west-2  # If not specified then the value of the EC2_REGION environment variable, if any, is used.
+
+    sg_allowed_ip: 117.192.2.93/32
+    keyname: jenkins_access
+
+  vars_files:
+    - vpc_info
+
+  tasks:
+
+    - name: create jenkins security group  
+      local_action:
+        module: ec2_group
+        vpc_id: "{{ vpc_id }}"
+        region: "{{ aws_region }}"
+        name: jenkins    
+        description: security group for jenkins host
+        rules:
+          # allow ssh access from your ip address  
+          - proto: tcp  
+            from_port: 22  
+            to_port: 22  
+            cidr_ip: "{{ sg_allowed_ip }}"  
+          # allow http access from anywhere  
+          - proto: tcp  
+            from_port: 80    
+            to_port: 80    
+            cidr_ip: 0.0.0.0/0  
+        rules_egress:
+          - proto: all
+            cidr_ip: 0.0.0.0/0
+
+
+    - name: create key pair main_access
+      local_action:  
+        module: ec2_key  
+        region: "{{ aws_region }}"
+        name: "{{ keyname }}"
+      register: mykey
+    - name: write key pair to file
+      local_action: shell echo "{{ item.value.private_key }}" > "{{ keyname }}".pem && chmod 600 "{{ keyname }}".pem
+      with_dict: mykey
+      when: item.value.private_key is defined
+
+
+
+
+
+
