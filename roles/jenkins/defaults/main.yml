@@ -5,7 +5,6 @@ jenkins_hostname: localhost
 jenkins_jar_location: /opt/jenkins-cli.jar
 jenkins_plugins:
   - chucknorris
-  - credentials-binding
   - git
   - github-api
   - github
@@ -16,6 +15,9 @@ jenkins_plugins:
   - sonar
   - ssh
   - swarm
+  - credentials-binding
+  - workflow-step-api
+  - plain-credentials
 
 j_jobs:
   - dsl-ami-provisioning
