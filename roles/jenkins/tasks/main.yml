@@ -30,7 +30,7 @@
   - build
 
 - name: Deploy provision_base_ami to usr/bin
-  template: src=usr/bin/provision_base_ami dest=/usr/bin/provision_base_ami owner=root group=root mode=0644
+  template: src=usr/bin/provision_base_ami dest=/usr/bin/provision_base_ami owner=root group=root mode=0755
   tags:
   - config
   - jenkins-config

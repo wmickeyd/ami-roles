@@ -34,7 +34,7 @@ def jobname = "ami-" + ami.name
   freeStyleJob(jobname) {
 
     steps {
-      shell('bin/provision_base_ami')
+      shell('/usr/bin/provision_base_ami')
     }
       
     scm {
