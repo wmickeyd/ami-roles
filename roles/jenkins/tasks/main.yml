@@ -29,6 +29,13 @@
   - facts
   - build
 
+- name: Deploy provision_base_ami to usr/bin
+  template: src=usr/bin/provision_base_ami dest=/usr/bin/provision_base_ami owner=root group=root mode=0644
+  tags:
+  - config
+  - jenkins-config
+  - build
+
 - name: Nginx proxy
   template: src=etc/nginx/conf.d/jenkins.conf dest=/etc/nginx/conf.d/jenkins.conf owner=root group=root mode=0644
   notify:

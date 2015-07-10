@@ -12,7 +12,6 @@ jenkins_plugins:
   - job-dsl
   - parameterized-trigger
   - shelve-project-plugin
-  - sonar
   - ssh
   - swarm
   - credentials-binding

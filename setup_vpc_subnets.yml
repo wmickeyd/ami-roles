@@ -46,10 +46,10 @@
               gw: igw
       register: vpc
 
-    - name: write vpc id to vpc_info file
+    - name: write vpc id to group_vars/all file
       local_action: shell echo "vpc_id:" "{{ vpc.vpc_id }}" 
                       >>  group_vars/all
-    - name: write subnets id to vpc_info file
+    - name: write subnets id to group_vars/all file
       local_action: shell echo "{{ item.resource_tags.Name }}"":" "{{ item.id }}" 
                       >> group_vars/all
       with_items: vpc.subnets

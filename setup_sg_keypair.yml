@@ -34,7 +34,11 @@
         rules_egress:
           - proto: all
             cidr_ip: 0.0.0.0/0
+      register: sg
 
+    - name: write group_id to group_vars/all file
+      local_action: shell echo "\ngroup_id:" "{{ sg.group_id }}"
+                      >>  group_vars/all
 
     - name: create key pair main_access
       local_action:  
