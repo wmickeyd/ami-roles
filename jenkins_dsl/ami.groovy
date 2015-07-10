@@ -19,7 +19,7 @@ def amis = [
                 [ "repo": ["https://github.com/kenzanmedia/ami-roles.git", "master"],
                   "name":"tomcat7",
                   "ami_profile":"tomcat7"
-                ,                
+                ],                
               "ami-jetty8": 
                 [ "repo": ["https://github.com/kenzanmedia/ami-roles.git", "master"],
                   "name":"jetty8",
