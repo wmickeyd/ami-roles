@@ -13,6 +13,7 @@
     linux_ami: ami-e7527ed7
     security_group: jenkins
     ami_profile: jenkins
+    iam_role: jenkinsRole
 
      # vpc_id: and subnet_public: added to group_vars/all by script 'setup_vpc_subnets.yml' at runtime
 
@@ -23,6 +24,7 @@
         key_name: "{{ keyname }}"
         group: "{{ security_group }}"
         instance_type: "{{ instance_type }}"
+        instance_profile_name: "{{ iam_role }}"
         image: "{{ linux_ami }}"
         wait: true
         region: "{{ aws_region }}"
