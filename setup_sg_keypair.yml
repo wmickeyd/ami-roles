@@ -1,6 +1,5 @@
 ---  
 
-
 - name: "setup keypair and security groups"
   hosts: localhost
   gather_facts: no
@@ -11,11 +10,9 @@
     sg_allowed_ip: 117.192.2.93/32
     keyname: jenkins_access
 
-  vars_files:
-    - vpc_info
+    # vpc_id: added to group_vars/all by script 'setup_vpc_subnets.yml' at runtime
 
   tasks:
-
     - name: create jenkins security group  
       local_action:
         module: ec2_group

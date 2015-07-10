@@ -14,8 +14,8 @@
     security_group: jenkins
     ami_profile: jenkins
 
-  vars_files:
-    - vpc_info
+     # vpc_id: and subnet_public: added to group_vars/all by script 'setup_vpc_subnets.yml' at runtime
+
 
   tasks:
     - name: Launch jenkins instance

@@ -1,6 +1,5 @@
 ---  
 
-
 - name: "setup VPC"
   hosts: localhost
   gather_facts: no
@@ -8,7 +7,6 @@
     aws_region: us-west-2  # If not specified then the value of the EC2_REGION environment variable, if any, is used.
     # prefix for naming
     prefix: dev
-
 
     top_cidr: 10.0.0.0/16
 
@@ -30,7 +28,7 @@
         module: ec2_vpc
         region: "{{ aws_region }}"
         cidr_block: "{{ top_cidr }}"
-        resource_tags: '{"Name":"{{ prefix }}_vpc" , "Environment": "Development"}'
+        resource_tags: '{"Name":"{{ prefix }}_vpc"}'
         subnets:
           - cidr: "{{ subnet_block_1 }}"
             az: "{{ aws_region }}{{ az0 }}"
@@ -42,7 +40,7 @@
         internet_gateway: yes
         route_tables:
           - subnets:
-            - 10.0.0.0/24
+            - "{{ subnet_block_1 }}"
             routes:
             - dest: 0.0.0.0/0
               gw: igw
@@ -50,10 +48,10 @@
 
     - name: write vpc id to vpc_info file
       local_action: shell echo "vpc_id:" "{{ vpc.vpc_id }}" 
-                      > vpc_info
+                      >>  group_vars/all
     - name: write subnets id to vpc_info file
       local_action: shell echo "{{ item.resource_tags.Name }}"":" "{{ item.id }}" 
-                      >> vpc_info
+                      >> group_vars/all
       with_items: vpc.subnets
 
 
