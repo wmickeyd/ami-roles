@@ -5,22 +5,17 @@ def amiId = "ami-e7527ed7"
 
 
 def amis = [  
-              "ami-nexus": 
+              "ami-nexus":
                 [ "repo": ["https://github.com/kenzanmedia/ami-roles.git", "master"],
                   "name":"nexus",
                   "ami_profile":"nexus"
-                ],              
-              "ami-jenkins-slave": 
-                [ "repo": ["https://github.com/kenzanmedia/ami-roles.git", "master"],
-                  "name":"jenkins-slave",
-                  "ami_profile":"jenkins-slave"
                 ],
-              "ami-tomcat7": 
+              "ami-tomcat7":
                 [ "repo": ["https://github.com/kenzanmedia/ami-roles.git", "master"],
                   "name":"tomcat7",
                   "ami_profile":"tomcat7"
-                ],                
-              "ami-jetty8": 
+                ],
+              "ami-jetty8":
                 [ "repo": ["https://github.com/kenzanmedia/ami-roles.git", "master"],
                   "name":"jetty8",
                   "ami_profile":"jetty8"
