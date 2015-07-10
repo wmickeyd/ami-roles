@@ -1,7 +1,15 @@
 ---
 
-- name: Install ansible-lint
-  command: pip install --install-option="--install-scripts=/usr/bin" ansible-lint
+- name: Pip install ansible-lint
+  pip: name=ansible-lint
+  tags:
+    - build
+    - system
+    - ansible-lint
+
+
+- name: Link to usr/bin
+  file: src=/usr/local/bin/ansible-lint dest=/usr/bin/ansible-lint state=link owner=root group=root
   tags:
     - build
     - system
