@@ -64,8 +64,6 @@
 {
   "type": "ansible-local",
   "playbook_file": "{{user `ami_profile`}}.yml",
-  "extra_arguments": ["--tags {{user `job_tag`}}"
-  ],
   "group_vars": "group_vars",
   "staging_directory":"/tmp/ansible-packer"
 }
