@@ -19,6 +19,11 @@ def amis = [
                 [ "repo": ["https://github.com/kenzanmedia/ami-roles.git", "master"],
                   "name":"jetty8",
                   "ami_profile":"jetty8"
+                ],
+              "ami-base":
+                [ "repo": ["https://github.com/kenzanmedia/ami-roles.git", "master"],
+                  "name":"base",
+                  "ami_profile":"base"
                 ]
             ]
 
