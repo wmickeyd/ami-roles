@@ -39,6 +39,11 @@ if [[ -z "$AMI_PROFILE" ]]; then
   read AMI_PROFILE
 fi
 
+if [ ! -f ${AMI_PROFILE}.yml ]; then
+  eval "echo \"$(< template_ami_profile.yml)\"" > ${AMI_PROFILE}.yml
+fi
+
+
 # Log file
 LOG=$BUILD_NUMBER-$AMI_PROFILE.log
 

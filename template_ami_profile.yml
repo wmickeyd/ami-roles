@@ -4,9 +4,9 @@
   sudo: yes
 
   vars:
-    ami_profile: jenkins
+    ami_profile: $AMI_PROFILE
 
   roles:
   - base
-  - jenkins
+  - $AMI_PROFILE
   - postrun
