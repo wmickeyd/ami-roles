@@ -16,6 +16,7 @@ jenkins_plugins:
   - swarm
   - credentials-binding
   - workflow-step-api
+  - ws-cleanup
   - plain-credentials
 
 j_jobs:
