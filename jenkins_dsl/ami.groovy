@@ -47,6 +47,10 @@ def jobname = "ami-" + ami.name
       }
     }
 
+    wrappers {
+      preBuildCleanup()
+    }
+
     publishers {
       archiveArtifacts { 
         pattern('AMI-$AMI_PROFILE')
