@@ -8,8 +8,8 @@ if [[ -f {{ user_data }} ]];then
 fi
 
 ## Source Custom options if any
-if [[ -f /etc/reuters/jetty ]];then
-   . /etc/reuters/jetty
+if [[ -f /etc/kenzanmedia/jetty ]];then
+   . /etc/kenzanmedia/jetty
 fi
 
 ## Amazon
