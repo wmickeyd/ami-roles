@@ -7,7 +7,7 @@
   vars:
     aws_region: us-west-2  # If not specified then the value of the EC2_REGION environment variable, if any, is used.
 
-    sg_allowed_ip: 117.192.2.93/32
+    sg_allowed_ip: 0.0.0.0/0
     keyname: jenkins_access
 
     # vpc_id: added to group_vars/all by script 'setup_vpc_subnets.yml' at runtime
