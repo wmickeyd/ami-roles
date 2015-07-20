@@ -27,7 +27,8 @@ This repository contains scripts that provision, build and deploy infrastructure
 
 ***script 1 - setup_vpc_subnets.yml***
 ```bash
-    ansible-playbook -vvvv setup_vpc_subnets.yml```
+    ansible-playbook -vvvv setup_vpc_subnets.yml
+```
 ```bash
     ansible-playbook -vvvv setup_vpc_subnets.yml -e "aws_region=us-west-2" -e "az0=a" -e "az1=b"
 ```
