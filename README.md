@@ -46,9 +46,9 @@ This repository contains scripts that provision, build and deploy infrastructure
 
 
 ***script 3 - launch_jenkins.yml***
-	```bash
+```bash
 	ansible-playbook -vvvv launch_jenkins.yml
-	```
+```
 	
 	This script is used to launch Amazon AWS ami and then Install and Configure Jenkins on it
 		Note: Need to have vpc_id and subnets.id updated to the group_vars/all (which is done by script 'setup_vpc_subnets.yml')
