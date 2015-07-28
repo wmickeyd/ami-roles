@@ -37,7 +37,7 @@
       register: sg
 
     - name: write group_id to group_vars/all file
-      local_action: shell echo "\ngroup_id:" "{{ sg.group_id }}"
+      local_action: shell echo "group_id:" "{{ sg.group_id }}"
                       >>  group_vars/all
 
     - name: create key pair main_access
@@ -50,9 +50,3 @@
       local_action: shell echo "{{ item.value.private_key }}" > "{{ keyname }}".pem && chmod 600 "{{ keyname }}".pem
       with_dict: mykey
       when: item.value.private_key is defined
-
-
-
-
-
-
