@@ -10,7 +10,7 @@
 
     keyname: jenkins_access
     instance_type: t2.medium
-    linux_ami: ami-e7527ed7
+    linux_ami: ami-9ff7e8af # Amazon Linux AMI 2015.09 was released on 2015-09-22.
     security_group: jenkins
     ami_profile: jenkins
     iam_role: jenkinsRole
