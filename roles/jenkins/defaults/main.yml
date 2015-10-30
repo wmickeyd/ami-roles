@@ -18,6 +18,7 @@ jenkins_plugins:
   - workflow-step-api
   - ws-cleanup
   - plain-credentials
+  - postbuildscript
 
 j_jobs:
   - dsl-ami-provisioning
