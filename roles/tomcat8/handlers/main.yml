@@ -1,0 +1,19 @@
+---
+
+- name: restart tomcat8
+  service: name=tomcat8 state=restarted
+  when: update
+
+- name: reload tomcat8
+  service: name=tomcat8 state=reloaded
+  when: update
+
+- name: start tomcat8
+  service: name=tomcat8 state=started
+
+- name: stop tomcat8
+  service: name=tomcat8 state=stopped
+
+- name: enable tomcat8
+  service: name=tomcat8 enabled=yes
+  when: deploy is defined
