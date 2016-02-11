@@ -1,0 +1,15 @@
+---
+
+- hosts: 127.0.0.1
+  sudo: yes
+
+  vars:
+    ami_profile: base
+
+  roles:
+  - base
+  - devel
+  - oraclejdk8
+  # - tomcat8 - eureka role have tomcat8 in meta dependencies
+  - eureka
+  - postrun
