@@ -10,7 +10,7 @@
   - build
 
 - name: copy tomcat8.conf template
-  template: src=etc/tomcat8/tomcat8.conf.j2 dest=/etc/tomcat8/tomcat8.conf owner=tomcat group=tomcat mode=0644
+  template: src=etc/tomcat8/tomcat8.conf dest=/etc/tomcat8/tomcat8.conf owner=tomcat group=tomcat mode=0644
   tags:
   - config
   - tomcat8

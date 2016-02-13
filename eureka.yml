@@ -4,12 +4,11 @@
   sudo: yes
 
   vars:
-    ami_profile: base
+    ami_profile: eureka
 
   roles:
   - base
   - devel
   - oraclejdk8
-  # - tomcat8 - eureka role have tomcat8 in meta dependencies
   - eureka
   - postrun
