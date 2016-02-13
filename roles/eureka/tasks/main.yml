@@ -1,7 +1,7 @@
 ---
 # Eureka role
 
-- name: Download snapshot build of Eureka from Cloudbees
+- name: Download eureka-server to tomcat8/webapps
   get_url: url={{ eureka_build_url }} dest=/usr/share/tomcat8/webapps/eureka.war owner=tomcat group=tomcat mode=0755
   tags:
   - system
