@@ -1,17 +1,16 @@
 ---
+# Eureka role
 
-- name: Install packages
-  yum: name={{ item }} state=latest
-  with_items: packages
-  notify: enable tomcat8
+- name: Download eureka-server to tomcat8/webapps
+  get_url: url={{ eureka_build_url }} dest=/usr/share/tomcat8/webapps/eureka.war owner=tomcat group=tomcat mode=0755
   tags:
   - system
-  - tomcat8
+  - eureka
   - build
 
 - name: copy tomcat8.conf template
   template: src=etc/tomcat8/tomcat8.conf dest=/etc/tomcat8/tomcat8.conf owner=tomcat group=tomcat mode=0644
   tags:
   - config
-  - tomcat8
+  - eureka
   - build

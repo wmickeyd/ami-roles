@@ -1,0 +1,6 @@
+---
+
+# http://mvnrepository.com/artifact/com.netflix.eureka/eureka-server
+
+eureka_version : 1.4.0
+eureka_build_url: http://central.maven.org/maven2/com/netflix/eureka/eureka-server/{{ eureka_version }}/eureka-server-{{ eureka_version }}.war
