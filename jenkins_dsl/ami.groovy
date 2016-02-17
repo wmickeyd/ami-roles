@@ -1,29 +1,40 @@
 // file: jenkins_dsl/ami.groovy
 //
-// Amazon Linux AMI ID
-def amiId = "ami-e7527ed7"
-
+// Amazon Linux AMI ID  http://aws.amazon.com/amazon-linux-ami/
+// HVM (SSD) EBS-Backed 64-bit --  Region: US East N. Virginia
+def amiId = "ami-60b6c60a"
+def git_repo = "https://github.com/kenzanlabs/ami-roles.git"
 
 def amis = [  
               "ami-nexus":
-                [ "repo": ["https://github.com/kenzanmedia/ami-roles.git", "master"],
+                [
                   "name":"nexus",
-                  "ami_profile":"nexus"
+                  "ami_profile":"nexus",
+                  "branch" : "master"
                 ],
               "ami-tomcat7":
-                [ "repo": ["https://github.com/kenzanmedia/ami-roles.git", "master"],
+                [ 
                   "name":"tomcat7",
-                  "ami_profile":"tomcat7"
+                  "ami_profile":"tomcat7",
+                  "branch" : "master"
+                ],
+              "ami-tomcat8":
+                [ 
+                  "name":"tomcat8",
+                  "ami_profile":"tomcat8",
+                  "branch" : "master"
                 ],
               "ami-jetty8":
-                [ "repo": ["https://github.com/kenzanmedia/ami-roles.git", "master"],
+                [ 
                   "name":"jetty8",
-                  "ami_profile":"jetty8"
+                  "ami_profile":"jetty8",
+                  "branch" : "master"
                 ],
               "ami-base":
-                [ "repo": ["https://github.com/kenzanmedia/ami-roles.git", "master"],
+                [ 
                   "name":"base",
-                  "ami_profile":"base"
+                  "ami_profile":"base",
+                  "branch" : "master"
                 ]
             ]
 
@@ -34,14 +45,14 @@ def jobname = "ami-" + ami.name
   freeStyleJob(jobname) {
 
     steps {
-      shell('/usr/bin/provision_base_ami')
+      shell('$WORKSPACE/bin/provision_base_ami')
     }
       
     scm {
       git {
         remote {
-          url(ami.repo.get(0))
-          branch(ami.repo.get(1))
+          url(git_repo)
+          branch(ami.branch)
           credentials("GitHub")
         }
       }
