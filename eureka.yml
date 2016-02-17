@@ -1,0 +1,14 @@
+---
+
+- hosts: 127.0.0.1
+  sudo: yes
+
+  vars:
+    ami_profile: eureka
+
+  roles:
+  - base
+  - devel
+  - oraclejdk8
+  - eureka
+  - postrun
