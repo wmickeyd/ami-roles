@@ -21,9 +21,6 @@ except ImportError, e:
 def main(argv):
     (type, address, action, key, value) = parse_cli()
 
-    if value is not None:
-        print "Value to set: " + str(value)
-
     base_url = ''
     address = re.sub('http://', '', address)
     if type == 'etcd':
@@ -43,8 +40,6 @@ def main(argv):
 
         if value is not None:
             print value
-        else:
-            print ''
 
     elif action.lower() == 'delete':
         delete_key_value(base_url, key)
