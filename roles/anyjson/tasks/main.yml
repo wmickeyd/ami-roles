@@ -1,0 +1,5 @@
+---
+- name: Pip install anyjson
+  pip: name=anyjson
+  tags:
+    - build

@@ -1,0 +1,11 @@
+---
+
+- name: restart karyon
+  service: name=karyon state=restarted
+  when: update
+
+- name: start karyon
+  service: name=karyon state=started
+
+- name: stop karyon
+  service: name=karyon state=stopped

@@ -35,6 +35,12 @@ def amis = [
                   "name":"base",
                   "ami_profile":"base",
                   "branch" : "master"
+                ],
+              "ami-karyon":
+                [ 
+                  "name":"karyon",
+                  "ami_profile":"karyon",
+                  "branch" : "master"
                 ]
             ]
 

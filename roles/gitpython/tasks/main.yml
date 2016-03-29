@@ -1,0 +1,6 @@
+---
+- name: Pip install gitpython
+  pip: name=gitpython
+  tags:
+    - build
+    - system

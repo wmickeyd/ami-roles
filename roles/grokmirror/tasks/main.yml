@@ -1,0 +1,14 @@
+---
+
+# Do some tasks
+- name: Get grokmirror source
+  git: repo={{ grokmirror_repo }} dest=/tmp/grokmirror
+  tags:
+    - build
+    - system
+
+- name: Install packages
+  command: python setup.py install --install-scripts=/usr/bin chdir=/tmp/grokmirror 
+  tags:
+    - build
+    - system

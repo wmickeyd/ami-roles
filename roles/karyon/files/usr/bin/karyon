@@ -1,0 +1,6 @@
+#!/bin/bash
+
+. /etc/default/karyon
+
+cd $KARYON_HOME
+$JAVA_CMD $JAVA_OPTIONS $KARYON_CLASS_NAME 2>&1 | tee -a $LOG_FILE > /dev/null 
