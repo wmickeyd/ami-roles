@@ -1,0 +1,104 @@
+#!/bin/bash
+
+## Asgard
+# Get vars set by Asgard
+if [[ -f {{ user_data }} ]];then
+  . {{ user_data }}
+else 
+  echo "Required file {{ user_data }} missing"
+  exit 1
+fi
+
+KARYON_CLASS_NAME=com.kenzanmedia.server.ServerRunner
+
+## Source Custom options if any
+if [[ -f /etc/kenzanmedia/karyon ]];then
+   . /etc/kenzanmedia/karyon
+fi
+
+## Amazon
+
+# Instance Id
+instance_id=$(curl -s http://169.254.169.254/latest/meta-data/instance-id/)
+# Availability Zone
+availability_zone=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone/)
+
+
+# Set some defaults if not in User Data
+if [ -z "$CLOUD_STACK" ];then
+  CLOUD_STACK=default
+fi
+if [ -z "$CLOUD_APP" ];then
+  CLOUD_APP=default
+fi
+if [ -z "$CLOUD_ENVIRONMENT" ];then
+  CLOUD_ENVIRONMENT=integration
+fi
+if [ -z "$EC2_REGION" ];then
+  region=${availability_zone%?}
+  EC2_REGION=$region
+fi
+
+
+## Define Heap sizes
+
+# Percent of total sytem memory to use
+xmx_percent={{ xmx_percent }}
+xms_percent={{ xms_percent }}
+
+# Total system memory available
+system_memory_in_mb=$(free -m | awk '/Mem:/ {print $2}')
+
+# Xmx
+xmx_memory_float=$(echo "$system_memory_in_mb*$xmx_percent"|bc)
+xmx_memory=$(echo "($xmx_memory_float+0.5)/1" | bc)
+
+# Xms
+xms_memory_float=$(echo "$system_memory_in_mb*$xms_percent"|bc)
+xms_memory=$(echo "($xms_memory_float+0.5)/1" | bc)
+
+
+## Karyon vars
+
+KARYON_HOME=/{{ karyon_home }}
+KARYON_DATA=/{{ karyon_data }}
+
+LOG_FILE=$KARYON_DATA/logs/karyon.log
+
+
+## Java vars
+
+JAVA_HOME=/{{ java_default }}
+JAVA_CMD=$JAVA_HOME/bin/java
+
+export CLASSPATH=$CLASSPATH:$KARYON_HOME/*:$KARYON_HOME/lib/*
+
+JVM_OPTIONS="$JVM_OPTIONS -Xmx${xmx_memory}m -Xms${xms_memory}m -XX:ErrorFile=./hs_err_pid%p.log -XX:-HeapDumpOnOutOfMemoryError"
+
+# JAVA_OPTIONS="$JAVA_OPTIONS "
+
+## Asgard vars
+
+# ASGARD_OPTIONS="$ASGARD_OPTIONS \
+#-Deureka.datacenter=cloud \
+#-Dcom.netflix.karyon.eureka.datacenter.type=Amazon \
+#-Deureka.environment=$CLOUD_ENVIRONMENT \
+#-Darchaius.deployment.environment=$CLOUD_ENVIRONMENT \
+#-Darchaius.deployment.subenvironment=$CLOUD_DEV_PHASE \
+#-Darchaius.deployment.stack=$CLOUD_STACK \
+#-Darchaius.deployment.region=$EC2_REGION \
+#-Darchaius.deployment.availabilityzone=$availability_zone \
+#-Darchaius.deployment.applicationId=$CLOUD_APP \
+#-Darchaius.deployment.serverId=$instance_id \
+#-Darchaius.deployment.domainName=$CLOUD_DOMAIN \
+#-Darchaius.deployment.autoscaleGroup=$CLOUD_AUTO_SCALE_GROUP \
+
+#$REPO_JVM_ARGS"
+
+
+## JMX Configuration
+# JMX_OPTIONS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.port=7094 -Djava.rmi.server.hostname=127.0.0.1"
+
+# JAVA_OPTIONS="$JVM_OPTIONS $JAVA_OPTIONS $ASGARD_OPTIONS $JMX_OPTIONS"
+
+
