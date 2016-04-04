@@ -1,0 +1,24 @@
+---
+
+# Jetty Version
+jetty_version: 9.3.8.v20160314
+jetty_url: http://download.eclipse.org/jetty/{{ jetty_version }}/dist/jetty-distribution-{{ jetty_version }}.tar.gz
+
+# FS vars
+jetty_home: "{{ kenzanmedia_apps }}/jetty9"
+jetty_data: "{{ kenzanmedia_data }}/jetty9"
+jetty_logs: "{{ jetty_data }}/logs"
+jetty_webapps: "{{ kenzanmedia_apps }}/webapps"
+
+# Jetty files to remove
+jetty_remove:
+  - /contexts/test.xml
+  - /contexts/javadoc.xml
+  - /contexts/test.d
+
+## Resources
+# Heap
+# Percent of total memory to use for heap size
+xmx_percent: .8
+# Percent of total memory to use for start heap
+xms_percent: .2
