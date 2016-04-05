@@ -16,3 +16,11 @@
   - build
   - base
   - config
+
+- name: haproxy startup
+  service: name=haproxy state=started enabled=yes
+  tags:
+  - system
+  - build
+  - base
+  - config
