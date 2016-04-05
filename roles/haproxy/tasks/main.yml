@@ -18,7 +18,6 @@
   - config
 
 - name: haproxy startup
-  when: ansible_distribution == 'Ubuntu'
   service: name=haproxy state=started enabled=yes
   tags:
   - system
