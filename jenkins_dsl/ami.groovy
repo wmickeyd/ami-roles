@@ -3,7 +3,9 @@
 // Amazon Linux AMI ID  http://aws.amazon.com/amazon-linux-ami/
 // HVM (SSD) EBS-Backed 64-bit --  Region: US East N. Virginia
 def amiId = "ami-60b6c60a"
-def git_repo = "https://github.com/kenzanlabs/ami-roles.git"
+//def git_repo = "https://github.com/kenzanlabs/ami-roles.git"
+def git_repo = "https://github.com/cinderellagarage/ami-roles.git"
+
 
 def amis = [  
               "ami-nexus":
