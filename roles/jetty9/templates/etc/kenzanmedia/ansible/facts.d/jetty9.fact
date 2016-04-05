@@ -1,0 +1,4 @@
+[jetty9]
+role=jetty9
+jetty_version={{ jetty_version }}
+
