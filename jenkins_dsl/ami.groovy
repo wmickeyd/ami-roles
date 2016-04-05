@@ -41,6 +41,12 @@ def amis = [
                   "name":"karyon",
                   "ami_profile":"karyon",
                   "branch" : "master"
+                ],
+              "ami-haproxy":
+                [
+                  "name":"haproxy",
+                  "ami_profile":"haproxy",
+                  "branch" : "master"
                 ]
             ]
 
