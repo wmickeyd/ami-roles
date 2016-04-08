@@ -1,0 +1,17 @@
+---
+
+- name: Add Jenkins repo GPG key
+  command: rpm --import {{ jenkins_repo_key_url }}
+  tags:
+  - system
+  - jenkins
+  - build
+
+- name: Ensure Jenkins Yum repo present
+  get_url: url={{ jenkins_repo_url }} dest={{ jenkins_repo_destination }} mode=0644
+  tags:
+  - system
+  - jenkins
+  - build
+
+

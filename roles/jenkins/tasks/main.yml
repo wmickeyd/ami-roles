@@ -1,21 +1,21 @@
 ---
 
-- name: Ensure Jenkins Yum repo present
-  get_url: url={{ jenkins_repo_url }} dest=/etc/yum.repos.d/jenkins.repo mode=0644
-  tags:
-  - system
-  - jenkins
-  - build
+- name: Set distro-specific variables
+  include_vars: '{{ item }}'
+  with_first_found:
+    - '{{ ansible_distribution }}.yml'
+    -  default.yml 
 
-- name: Add Jenkins repo GPG key
-  command: rpm --import {{ jenkins_repo_key_url }}
-  tags:
-  - system
-  - jenkins
-  - build
+- name: Setup Amazon linux
+  include: Amazon.yml
+  when: ansible_distribution== 'Amazon'
+
+- name: Setup Ubuntu
+  include: Ubuntu.yml
+  when: ansible_distribution == 'Ubuntu'
 
 - name: Ensure Jenkins installed
-  yum: name=jenkins state=present
+  package: name=jenkins state=present
   tags:
   - system
   - jenkins
