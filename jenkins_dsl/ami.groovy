@@ -2,7 +2,10 @@
 //
 // Amazon Linux AMI ID  http://aws.amazon.com/amazon-linux-ami/
 // HVM (SSD) EBS-Backed 64-bit --  Region: US East N. Virginia
-def amiId = "ami-60b6c60a"
+// Ubuntu 15.10 wily - https://cloud-images.ubuntu.com/locator/ec2/
+// HVM (SSD) EBS-Backed 64-bit --  Region: US East N. Virginia
+def ubuntu_ami = "ami-8b9087e1"
+def amazon_ami = "ami-60b6c60a"
 def git_repo = "https://github.com/kenzanlabs/ami-roles.git"
 
 def amis = [  
@@ -91,11 +94,16 @@ def jobname = "ami-" + ami.name
         pattern('AMI-$AMI_PROFILE')
       }
     }
-
     parameters {
-      stringParam("AMI_ID", amiId,"AMI_ID - [HVM ID](http://aws.amazon.com/amazon-linux-ami/)")
+      stringParam("UBUNTUAMI", ubuntu_ami, "Ubuntu amiid to be used")
+      stringParam("AMAZONAMI", amazon_ami, "Amazon amiid to be used")
       stringParam("AMI_PROFILE", ami.ami_profile, "Profile to use")
     }
+    
+    parameters {
+      choiceParam("OS", ['Both', 'Ubuntu','Amazon'], 'OS - Choices are Ubuntu or Amazon or build one of each')
+    }
+    
   }
 }
 

@@ -3,6 +3,7 @@
 - name: Install packages
   yum: name={{ item }} state=latest
   with_items: packages
+  when: ansible_os_family == 'RedHat'
   tags:
   - system
   - nginx
