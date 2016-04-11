@@ -1,0 +1,70 @@
+---
+
+- name: Ensure Jenkins Yum repo present
+  get_url: url={{ jenkins_repo_url }} dest=/etc/yum.repos.d/jenkins.repo mode=0644
+
+- name: Add Jenkins repo GPG key
+  command: rpm --import {{ jenkins_repo_key_url }}
+
+- name: Ensure Jenkins installed
+  yum: name=jenkins state=present
+
+# AJP no longer supported, but still included in RPM
+# https://issues.jenkins-ci.org/browse/JENKINS-33776
+- name: Remove AJP in startup
+  replace: dest=/etc/init.d/jenkins regexp='^\[ -n "\$JENKINS_AJP' replace='#[ -n "$JENKINS_AJP'
+
+- name: Local Ansible facts
+  template: src={{ role_local_facts }}/jenkins.fact dest=/{{ role_local_facts }}/jenkins.fact owner=root group=root mode=0644
+
+- name: Deploy provision_base_ami to usr/bin
+  template: src=usr/bin/provision_base_ami dest=/usr/bin/provision_base_ami owner=root group=root mode=0755
+
+- name: Nginx proxy
+  template: src=etc/nginx/conf.d/jenkins.conf dest=/etc/nginx/conf.d/jenkins.conf owner=root group=root mode=0644
+  notify:
+  - restart nginx
+
+- name: create jenkins directory job
+  action: file path=/var/lib/jenkins/jobs/{{item}} owner=jenkins state=directory
+  with_items: j_jobs
+
+- name: configure jenkins job
+  action: copy src=jobs/{{item}}/config.xml dest=/var/lib/jenkins/jobs/{{item}}/config.xml owner=jenkins
+  with_items: j_jobs
+
+
+# Make sure Jenkins starts, then configure Jenkins.
+- name: Ensure Jenkins is started and runs on startup.
+  service: name=jenkins state=started enabled=yes
+
+- name: Wait for Jenkins to start up before proceeding.
+  shell: curl --head --silent http://{{ jenkins_hostname }}:8080/cli/
+  register: result
+  until: result.stdout.find("200 OK") != -1
+  retries: "{{ jenkins_connection_retries }}"
+  delay: "{{ jenkins_connection_delay }}"
+  changed_when: false
+
+# jenkins has to start once in 'Wizard' mode to enable this, so moving beneath Jenkins start
+- name: create groovy init script
+  action: copy src=init/HOOK.groovy dest=/var/lib/jenkins/init.groovy owner=jenkins
+
+- name: restart jenkins
+  command: service jenkins restart
+
+- name: Get the jenkins-cli jarfile from the Jenkins server.
+  get_url:
+    url: "http://{{ jenkins_hostname }}:8080/jnlpJars/jenkins-cli.jar"
+    dest: "{{ jenkins_jar_location }}"
+  register: jarfile_get
+  until: "'OK' in jarfile_get.msg or 'file already exists' in jarfile_get.msg"
+  retries: 5
+  delay: 10
+
+- name: restart Nginx proxy
+  command: service nginx restart
+
+# Jenkins2.0 uses security out of the box and overwrites config file on startup, adding plugins in groovy script
+# Update Jenkins and install configured plugins.
+#- include: plugins.yml

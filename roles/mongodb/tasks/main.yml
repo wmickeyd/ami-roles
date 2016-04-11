@@ -1,0 +1,20 @@
+---
+
+- name: add repository
+  copy: src=etc/yum.repos.d/mongo.repo dest=/etc/yum.repos.d/mongo.repo owner=root mode=0644
+
+- name: install mongo
+  package: name=mongodb-org state=present
+
+- name: listen on all interfaces
+  replace: dest=/etc/mongod.conf regexp="bindIp{{':'}} 127.0.0.1.*" replace="#Listening on all ip addresses"
+
+- name: turn on replication
+  replace: dest=/etc/mongod.conf regexp="^#replication{{':'}}" replace="replication{{':'}}"
+
+- name: name replication set
+  lineinfile: dest=/etc/mongod.conf insertafter="replication{{':'}}" line=" replSetName{{':'}} "rs0""
+
+- name: start mongo
+  service: name=mongod state=started enabled=yes
+

@@ -1,0 +1,7 @@
+---
+
+dependencies:
+- oraclejdk8
+- jenkins-user
+- nginx
+- packer

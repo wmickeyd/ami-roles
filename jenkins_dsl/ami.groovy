@@ -47,6 +47,18 @@ def amis = [
                   "name":"haproxy",
                   "ami_profile":"haproxy",
                   "branch" : "master"
+                ],
+              "ami-jenkins2.0":
+                [
+                  "name":"jenkins2.0",
+                  "ami_profile":"jenkins2.0",
+                  "branch" : "master"
+                ],
+              "ami-mongodb":
+                [
+                  "name":"mongodb",
+                  "ami_profile":"mongodb",
+                  "branch" : "master"
                 ]
             ]
 
