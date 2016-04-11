@@ -66,3 +66,4 @@ This repository contains scripts that provision, build and deploy infrastructure
 	Note:  Add Description as "GitHub", as the same is being refered in Jenkins DSL groovy scripts
 - Edit the dsl-ami-proviosing job, select your github credentials and save the job (without this the job will fail)
 - Trigger job 'dsl-ami-provisioning', which will create other 'base ami' jenkins jobs (jobs created by jenkins_ds/ami.groovy)
+

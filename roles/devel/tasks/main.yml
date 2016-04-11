@@ -1,10 +1,20 @@
 ---
 
-- name: Set distro-specific variables
-  include_vars: '{{ item }}'
-  with_first_found:
-    - '{{ ansible_distribution }}.yml'
-    -  default.yml 
+- name: Setup Amazon linux
+  include: Amazon.yml
+  when: ansible_distribution == 'Amazon'
+  tags:
+  - system
+  - jenkins
+  - build
+
+- name: Setup Ubuntu
+  include: Ubuntu.yml
+  when: ansible_distribution == 'Ubuntu'
+  tags:
+  - system
+  - jenkins
+  - build
 
 - name: Install Development Tools
   package: name={{dev_tools}} state=latest

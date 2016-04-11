@@ -1,5 +1,7 @@
 ---
 
+- include_vars: Default.yml
+
 - name: Add Jenkins repo GPG key
   command: rpm --import {{ jenkins_repo_key_url }}
   tags:

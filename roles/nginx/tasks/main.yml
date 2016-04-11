@@ -1,7 +1,15 @@
 ---
 
+- name: Update cache
+  apt: update_cache=yes
+  when: ansible_distribution == 'Ubuntu'
+  tags:
+  - system
+  - nginx
+  - build
+
 - name: Install packages
-  yum: name={{ item }} state=latest
+  package: name={{ item }} state=latest
   with_items: packages
   tags:
   - system
@@ -16,6 +24,7 @@
   - config
   - nginx-config
   - build
+  - update
 
 - name: Create instance_conf
   copy: src={{ instance_conf_bin }} dest=/{{ instance_conf_bin }} mode=0755 owner=root group=root
@@ -29,4 +38,4 @@
   tags:
   - system
   - nginx
-  - build  
+  - build

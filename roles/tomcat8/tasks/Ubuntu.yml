@@ -1,0 +1,98 @@
+---
+
+- include_vars: Ubuntu.yml
+  tags:
+  - system
+  - tomcat8
+  - build
+
+- name: Add Tomcat group
+  group: name=tomcat state=present
+  tags:
+  - system
+  - tomcat8
+  - build
+
+- name: Add Tomcat user
+  user: name=tomcat shell=/bin/false group=tomcat
+  tags:
+  - system
+  - tomcat8
+  - build
+
+- name: Make temp
+  file: path={{ temp_dir }} state=directory mode=0755
+  tags:
+  - system
+  - tomcat8
+  - build
+
+- name: Make directory that other roles expect
+  file: path=/etc/tomcat8 state=directory
+  tags:
+  - system
+  - tomcat8
+  - build
+
+- name: Download binary
+  get_url: url={{ download_url }} dest={{ temp_dir }}/tomcat.tar.gz owner=root group=root mode=0755
+  tags:
+  - system
+  - tomcat8
+  - build
+  
+- name: Install unzip
+  package: name=unzip state=present
+  tags:
+  - system
+  - tomcat8
+  - build
+
+- name: Unzip package
+  unarchive: src={{ temp_dir}}/tomcat.tar.gz  dest=/usr/share copy=no  
+  tags:
+  - system
+  - tomcat8
+  - build
+
+- name: reset perms on conf
+  file: path=/usr/share/apache-tomcat-{{ tomcat_version }}/conf state=directory owner=tomcat group=tomcat 
+  tags:
+  - system
+  - tomcat8
+  - build
+
+- name: reset perms on logs
+  file: path=/usr/share/apache-tomcat-{{ tomcat_version }}/logs state=directory owner=tomcat group=tomcat 
+  tags:
+  - system
+  - tomcat8
+  - build
+
+- name: reset perms on work
+  file: path=/usr/share/apache-tomcat-{{ tomcat_version }}/work state=directory owner=tomcat group=tomcat 
+  tags:
+  - system
+  - tomcat8
+  - build
+
+- name: link directory
+  file: src=/usr/share/apache-tomcat-{{ tomcat_version }} dest=/usr/share/tomcat8 owner=tomcat group=tomcat state=link
+  tags:
+  - system
+  - tomcat8
+  - build
+
+- name: Make/copy init script
+  template: src=etc/init/tomcat.conf dest=/etc/init/tomcat.conf owner=tomcat group=tomcat mode=0644
+  tags:
+  - config
+  - tomcat8
+  - build
+
+- name: initctl reload-configuration
+  service: name=tomcat enabled=yes
+  tags:
+  - system
+  - tomcat8
+  - build

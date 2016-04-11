@@ -1,0 +1,12 @@
+---
+
+- include_vars: Ubuntu.yml
+
+- name: Install gnupg-curl
+  package: name=gnupg-curl state=present
+
+- name: Add Mongo repo key
+  apt_key: keyserver={{ mongo_repo_key_url }} id=EA312927 state=present
+
+- name: Add Mongo repository
+  apt_repository: repo={{ mongo_repo_url }} state=present update_cache=yes

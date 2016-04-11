@@ -2,21 +2,22 @@
 
 - name: Update system packages
   command: yum -y update
+  when: ansible_os_family == 'RedHat'
   tags:
   - system
   - build
   - packages
   - base
 
-- name: Install packages
-  yum: name={{ item }} state=latest enablerepo=epel
-  with_items: packages
+- name: Update system packages
+  apt: upgrade=dist
+  when: ansible_os_family == 'Debian'
   tags:
   - system
   - build
   - packages
   - base
-
+  
 - name: Create directories
   file: path={{ item }} state=directory owner=root group=root mode=0755
   with_items: dirs
@@ -27,6 +28,7 @@
 
 - name: Security Updates
   cron: name="Yum Security Update" special_time='{{ security_update_schedule }}' job="/usr/bin/yum update -y --quiet --security" user="root" cron_file=02yum_security_update
+  when: ansible_os_family == 'RedHat'
   tags:
   - config
   - build
@@ -88,5 +90,3 @@
   - config
   - build
   - base
-
-

@@ -1,6 +1,7 @@
 {
   "variables":{
     "hvm_amiid":"",
+    "shellUser":"",
     "build":"",
     "ami_profile":"",
     "date":"",
@@ -15,7 +16,7 @@
   "ami_virtualization_type":"hvm",
   "type": "amazon-ebs",
   "source_ami": "{{user `hvm_amiid`}}",
-  "ssh_username": "ec2-user",
+  "ssh_username": "{{user `shellUser`}}",
   "associate_public_ip_address": "true",
   "vpc_id":"{{user `vpc_id`}}",
   "subnet_id":"{{user `subnet_id`}}",
@@ -37,17 +38,32 @@
 }
 ],
 "provisioners":[
-
-  {"type":"shell",
-  "inline":[
-  "sleep 90"
+  {
+    "type":"shell",
+    "inline":[
+    "sleep 90"
   ]
+  },
+  {
+    "type":"file",
+    "source":"bin/install_pip.sh",
+    "destination":"/tmp/install_pip.sh"
+  },
+  {
+    "type":"shell",
+    "inline_shebang":"/bin/bash",
+    "execute_command": "/usr/bin/env -i {{.Vars}} /bin/bash -i {{.Path}}",
+    "inline":[
+      "sudo chmod 777 /tmp/install_pip.sh",
+      "/tmp/install_pip.sh"
+    ]
   },
   {
     "type":"shell",
     "inline_shebang":"/bin/bash",
     "inline":[
     "sudo pip install ansible",
+    "sudo pip install markupsafe",
     "mkdir -p /tmp/ansible-packer/roles",
     "sudo chmod 777 /tmp/ansible-packer/roles"
     ]
