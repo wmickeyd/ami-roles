@@ -1,0 +1,12 @@
+
+
+if [ ! -f {{ user_data }} ]; then
+logger "Instance_Conf: Setting Hostname"
+curl -o /tmp/user_data.tmp -s http://127.0.0.1/latest/user-data
+  if ! `grep '#!' /tmp/user_data.tmp > /dev/null` && `grep CLOUD_STACK /tmp/user_data.tmp > /dev/null`; then
+    cp /tmp/user_data.tmp {{ user_data }}
+    chmod 644 {{ user_data }}
+  else
+   RETVAL=1
+  fi
+fi

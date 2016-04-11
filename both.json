@@ -1,0 +1,100 @@
+{
+	"variables": {
+		"hvm_amiid": "",
+		"aws_amiid": "",
+		"shellUser": "",
+        "awsShellUser":"",
+		"build": "",
+		"ami_profile": "",
+		"date": "",
+		"vpc_id": "",
+		"subnet_id": "",
+		"region": "",
+		"instance_type": ""
+	},
+	"builders": [{
+		"name": "hvm_builder",
+		"ami_virtualization_type": "hvm",
+		"type": "amazon-ebs",
+		"source_ami": "{{user `hvm_amiid`}}",
+		"ssh_username": "{{user `shellUser`}}",
+		"associate_public_ip_address": "true",
+		"vpc_id": "{{user `vpc_id`}}",
+		"subnet_id": "{{user `subnet_id`}}",
+		"instance_type": "{{user `instance_type`}}",
+		"ssh_pty": "true",
+		"ssh_timeout": "5m",
+		"ssh_private_ip": "true",
+		"ami_name": "{{user `ami_profile`}}_Ubuntu_build-{{user `build`}}_Source-{{user `hvm_amiid`}}_Built-{{user `date`}}",
+		"region": "{{user `region`}}",
+		"tags": {
+			"Name": "{{user `ami_profile`}}-{{user `build`}}",
+			"source": "Ubuntu_{{user `hvm_amiid`}}",
+			"virtualization_type": "hvm",
+			"build": "{{user `build`}}",
+			"profile": "{{user `ami_profile`}}",
+			"creator": "packer",
+			"creation_time": "{{user `date`}}"
+		}
+	}, {
+		"name": "aws_builder",
+		"ami_virtualization_type": "hvm",
+		"type": "amazon-ebs",
+		"source_ami": "{{user `aws_amiid`}}",
+		"ssh_username": "{{user `awsShellUser`}}",
+		"associate_public_ip_address": "true",
+		"vpc_id": "{{user `vpc_id`}}",
+		"subnet_id": "{{user `subnet_id`}}",
+		"instance_type": "{{user `instance_type`}}",
+		"ssh_pty": "true",
+		"ssh_timeout": "5m",
+		"ssh_private_ip": "true",
+		"ami_name": "{{user `ami_profile`}}_Amazon_build-{{user `build`}}_Source-{{user `aws_amiid`}}_Built-{{user `date`}}",
+		"region": "{{user `region`}}",
+		"tags": {
+			"Name": "{{user `ami_profile`}}-{{user `build`}}",
+			"source": "Amazon_{{user `aws_amiid`}}",
+			"virtualization_type": "hvm",
+			"build": "{{user `build`}}",
+			"profile": "{{user `ami_profile`}}",
+			"creator": "packer",
+			"creation_time": "{{user `date`}}"
+		}
+	}],
+	"provisioners": [{
+		"type": "shell",
+		"inline": [
+			"sleep 90"
+		]
+	}, {
+		"type": "file",
+		"source": "bin/install_pip.sh",
+		"destination": "/tmp/install_pip.sh"
+	}, {
+		"type": "shell",
+		"inline_shebang": "/bin/bash",
+		"execute_command": "/usr/bin/env -i {{.Vars}} /bin/bash -i {{.Path}}",
+		"inline": [
+			"sudo chmod 777 /tmp/install_pip.sh",
+			"/tmp/install_pip.sh"
+		]
+	}, {
+		"type": "shell",
+		"inline_shebang": "/bin/bash",
+		"inline": [
+			"sudo pip install ansible",
+			"sudo pip install markupsafe",
+			"mkdir -p /tmp/ansible-packer/roles",
+			"sudo chmod 777 /tmp/ansible-packer/roles"
+		]
+	}, {
+		"type": "file",
+		"source": "roles/",
+		"destination": "/tmp/ansible-packer/roles"
+	}, {
+		"type": "ansible-local",
+		"playbook_file": "{{user `ami_profile`}}.yml",
+		"group_vars": "group_vars",
+		"staging_directory": "/tmp/ansible-packer"
+	}]
+}

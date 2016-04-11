@@ -1,0 +1,5 @@
+[base]
+role=base
+{% for package in packages %}
+package={{ package }}
+{% endfor %}

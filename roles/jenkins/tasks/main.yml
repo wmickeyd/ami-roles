@@ -2,6 +2,7 @@
 
 - name: Ensure Jenkins Yum repo present
   get_url: url={{ jenkins_repo_url }} dest=/etc/yum.repos.d/jenkins.repo mode=0644
+  when: ansible_os_family == 'RedHat'
   tags:
   - system
   - jenkins
@@ -9,6 +10,7 @@
 
 - name: Add Jenkins repo GPG key
   command: rpm --import {{ jenkins_repo_key_url }}
+  when: ansible_os_family == 'RedHat'
   tags:
   - system
   - jenkins

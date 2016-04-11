@@ -19,6 +19,14 @@ SUBNET_ID=$(curl -s http://169.254.169.254/latest/meta-data/network/interfaces/m
 
 REGION=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone/ | sed '$s/.$//')
 
+OS=$(lsb_release -si)
+
+if [[ "$OS" == "Ubuntu" ]]; then
+  SSH_USERNAME=ubuntu
+else
+  SSH_USERNAME=ec2-user
+fi
+
 # Instance type http://www.ec2instances.info/
 INSTANCE_TYPE=t2.small
 # Packer file
@@ -62,6 +70,7 @@ fi
 -var subnet_id=$SUBNET_ID \
 -var region=$REGION \
 -var instance_type=$INSTANCE_TYPE \
+-var shellUser=$SSH_USERNAME \
 $PACKER_FILE \
 | tee $LOG
 

@@ -1,6 +1,7 @@
 ---
 - name: Install Development Tools
   yum: name="@Development Tools" state=latest
+  when: ansible_os_family == 'RedHat'
   tags:
     - system
     - build
