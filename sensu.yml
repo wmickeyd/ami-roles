@@ -1,0 +1,17 @@
+---
+- hosts: sensu
+  user: ubuntu
+  sudo: true
+  tasks:
+    - name: Install dependent packages
+      package: name={{item}} state=latest
+      with_items:
+        - build-essential
+        - redis-server
+        - rabbitmq-server
+    roles:
+    - sensu
+
+#Code for sensu playbook was modified from this source:
+#Project: ansible-sensu-playbook https://github.com/Mayeu/ansible-playbook-sensu
+#License (BSD) 

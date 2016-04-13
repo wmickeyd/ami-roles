@@ -61,6 +61,11 @@ def amis = [
                 [
                   "name":"mongodb",
                   "ami_profile":"mongodb",
+                ],
+              "ami-sensu"
+                [ 
+                  "name":"sensu",
+                  "ami_profile":"sensu",
                   "branch" : "master"
                 ]
             ]
