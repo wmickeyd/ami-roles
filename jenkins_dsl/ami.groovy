@@ -30,6 +30,12 @@ def amis = [
                   "ami_profile":"jetty8",
                   "branch" : "master"
                 ],
+              "ami-jetty9":
+                [
+                  "name":"jetty9",
+                  "ami_profile":"jetty9",
+                  "branch" : "master"
+                ],
               "ami-base":
                 [ 
                   "name":"base",
