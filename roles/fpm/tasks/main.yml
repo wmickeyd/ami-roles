@@ -1,7 +1,13 @@
 ---
 
 # Also in epel-testing
+
+- name: Install libffi
+  package: name=libffi-devel state=present
+  when: ansible_os_family == 'RedHat'
+
 - name: Effing package manager
   gem: name=fpm state=latest user_install=no
+  when: ansible_os_family == 'RedHat'
   tags:
     - build

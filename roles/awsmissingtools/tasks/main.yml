@@ -8,7 +8,7 @@
     - awsmissingtools
 
 - name: Setting up ec2-backup 
-  file: src=/usr/share/aws-missing-tools/ec2-automate-backup/ec2-automate-backup-awscli.sh dest=/usr/bin/ec2-backup state=link owner=root group=root
+  file: src=/usr/share/aws-missing-tools/ec2-automate-backup/ec2-automate-backup.sh dest=/usr/bin/ec2-backup state=link owner=root group=root
   tags:
     - config
     - build
