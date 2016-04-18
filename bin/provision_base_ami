@@ -95,11 +95,11 @@ double_AMI () {
 
 if [[ "$OS" == "Ubuntu" ]]; then
   SSH_USERNAME=ubuntu
-  AMI_ID=$UBUNTU_AMI
+  AMI_ID=$UBUNTUAMI
   single_AMI
 elif [[ "$OS" == "Amazon" ]]; then 
   SSH_USERNAME=ec2-user
-  AMI_ID=$AMAZON_AMI
+  AMI_ID=$AMAZONAMI
   single_AMI
 else 
   UBUNTU_SSH=ubuntu

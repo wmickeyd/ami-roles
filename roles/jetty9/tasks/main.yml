@@ -60,6 +60,16 @@
     - system
     - jetty
     - build
+    
+- name: jetty systemd config
+  template: src=etc/systemd/system/jetty.service dest=/etc/systemd/system/jetty.service owner=root group=root mode=0755
+  when: ansible_os_family == 'Debian'
+
+  tags:
+  - system
+  - build
+  - base
+  - config
 
 - name: Symlink webapps
   file: src=/{{ jetty_webapps }} dest=/{{ jetty_home }}/webapps state=link mode=0755 owner=jetty group=jetty
@@ -92,12 +102,12 @@
     - jetty-config
     - build
 
-- name: Enable jetty
-  service: name=jetty enabled=yes
-  tags:
-    - system
-    - jetty
-    - build
+#- name: Enable jetty
+#  service: name=jetty enabled=yes
+#  tags:
+#    - system
+#    - jetty
+#    - build
 
 - name: Local Ansible facts
   template: src={{ role_local_facts }}/jetty9.fact dest=/{{ role_local_facts }}/jetty9.fact owner=root group=root mode=0644
