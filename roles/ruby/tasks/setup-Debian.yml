@@ -1,0 +1,18 @@
+---
+
+- name: Update apt cache.
+  apt: update_cache=yes cache_valid_time=86400
+
+- name: Install ruby and rubygems.
+  package: "name={{ item }} state=present"
+  with_items:
+    - ruby
+    - ruby-dev 
+    - rubygems-integration
+
+ # http://help.rubygems.org/kb/rubygems/rubygems-upgrade-issues
+- name: Install rubygems-update
+  command: gem install rubygems-update
+
+- name: Update Ruby Gems
+  command: update_rubygems
