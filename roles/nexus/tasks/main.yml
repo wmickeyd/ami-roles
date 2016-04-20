@@ -82,6 +82,7 @@
 
 - name: Temporary directory for yum
   file: path=/var/tmp state=directory owner=root group=root mode=1777
+  when: ansible_os_family == 'RedHat'
   tags:
     - system
     - nexus

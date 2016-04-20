@@ -1,0 +1,7 @@
+---
+
+packages:
+  - openssl-devel
+  - libxml2-devel
+  - gcc-c++
+  - make

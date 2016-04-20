@@ -92,12 +92,12 @@
     - jetty-config
     - build
 
-- name: Enable jetty
-  service: name=jetty enabled=yes
-  tags:
-    - system
-    - jetty
-    - build
+#- name: Enable jetty
+#  service: name=jetty enabled=yes
+#  tags:
+#    - system
+#    - jetty
+#    - build
 
 - name: Local Ansible facts
   template: src={{ role_local_facts }}/jetty8.fact dest=/{{ role_local_facts }}/jetty8.fact owner=root group=root mode=0644
