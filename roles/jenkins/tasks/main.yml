@@ -18,6 +18,7 @@
 
 - name: Ensure Jenkins installed
   yum: name=jenkins state=present
+  when: ansible_os_family == 'RedHat'
   tags:
   - system
   - jenkins
@@ -81,6 +82,14 @@
   - jenkins-config
   - build
 
+- name: Ensure Jenkins installed
+  yum: name=maven state=present
+  when: ansible_os_family == 'RedHat'
+  tags:
+  - system
+  - jenkins
+  - maven
+  - build
 
 
 

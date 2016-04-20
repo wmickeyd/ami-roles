@@ -1,0 +1,5 @@
+---
+ dependencies:
+ - jetty9
+ - mongodb
+ #- elasticsearch

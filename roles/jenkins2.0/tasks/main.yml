@@ -2,12 +2,15 @@
 
 - name: Ensure Jenkins Yum repo present
   get_url: url={{ jenkins_repo_url }} dest=/etc/yum.repos.d/jenkins.repo mode=0644
+  when: ansible_os_family == 'RedHat'
 
 - name: Add Jenkins repo GPG key
   command: rpm --import {{ jenkins_repo_key_url }}
 
 - name: Ensure Jenkins installed
   yum: name=jenkins state=present
+  when: ansible_os_family == 'RedHat'
+
 
 # AJP no longer supported, but still included in RPM
 # https://issues.jenkins-ci.org/browse/JENKINS-33776
