@@ -1,0 +1,16 @@
+---
+
+# Include OS-specific installation tasks.
+- include: setup-RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+- include: setup-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+
+# http://bundler.io/
+# https://github.com/bundler/bundler
+
+# Install Bundler and configured gems.
+# - name: Install Bundler.
+#  gem: name=bundler state=present user_install=no

@@ -1,0 +1,29 @@
+---
+
+- name: Stopping tomcat8 service
+  service: name=tomcat8 state=stopped
+
+- name: Download snapshot build of Edda from cloudbees
+  get_url: url={{ latest_successful_build_url }} dest=/{{ jetty_webapps }}/edda.war owner=jetty group=jetty
+  #when: local_war == ""
+  tags: build
+
+- name: Create Edda directory
+  file: path=/{{ jetty_webapps }}/edda state=directory owner=jetty group=jetty
+  tags: build
+
+- name: Edda config
+  template: src=etc/edda.properties dest=/{{ edda_home }}/edda.properties owner=root group=root mode=0755
+  tags:
+  - system
+  - build
+  - base
+  - config
+  
+- name: Overwrite Jetty config with edda options
+  template: src=etc/default/jetty dest=/etc/default/jetty mode=0644 owner=root group=root
+  notify: restart jetty
+  tags:
+    - config
+    - jetty-config
+    - build

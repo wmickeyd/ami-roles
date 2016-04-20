@@ -1,13 +1,5 @@
 
 #!/bin/bash
-### BEGIN INIT INFO
-# Provides:          jetty
-# Required-Start:    $network
-# Required-Stop:     $network
-# Default-Start:     2 3 4 5
-# Default-Stop:      0 1 6
-# Short-Description: jetty
-### END INIT INFO
 
 ## Asgard
 # Get vars set by Asgard
@@ -86,7 +78,7 @@ JETTY_LOGS=/{{ jetty_logs }}
 
 JVM_OPTIONS="$JVM_OPTIONS -Xmx${xmx_memory}m -Xms${xms_memory}m"
 
-# JAVA_OPTIONS="$JAVA_OPTIONS "
+JAVA_OPTIONS="$JAVA_OPTIONS -Dedda.properties={{ edda_home }}/edda.properties"
 
 ## Asgard vars
 

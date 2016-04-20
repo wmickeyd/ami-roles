@@ -4,6 +4,7 @@
   package: name={{ item }} state=latest
   with_items: packages
   notify: enable tomcat7
+  when: ansible_os_family == 'RedHat'
   tags:
   - system
   - tomcat7

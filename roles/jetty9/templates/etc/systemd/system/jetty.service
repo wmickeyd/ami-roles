@@ -1,0 +1,10 @@
+[Unit]
+Description=Jetty
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/kenzanmedia/apps/jetty9
+ExecStart=/opt/kenzanmedia/apps/jetty9/bin/jetty.sh start
+
+[Install]
+WantedBy=multi-user.target
