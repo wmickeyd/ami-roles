@@ -1,21 +1,23 @@
 ---
 
-- name: Ensure Jenkins Yum repo present
-  get_url: url={{ jenkins_repo_url }} dest=/etc/yum.repos.d/jenkins.repo mode=0644
-  when: ansible_os_family == 'RedHat'
+- name: Setup Amazon linux
+  include: Amazon.yml
+  when: ansible_distribution == 'Amazon'
 
-- name: Add Jenkins repo GPG key
-  command: rpm --import {{ jenkins_repo_key_url }}
+- name: Setup Ubuntu
+  include: Ubuntu.yml
+  when: ansible_distribution == 'Ubuntu'
 
 - name: Ensure Jenkins installed
-  yum: name=jenkins state=present
-  when: ansible_os_family == 'RedHat'
-
+  package: name=jenkins state=present
 
 # AJP no longer supported, but still included in RPM
 # https://issues.jenkins-ci.org/browse/JENKINS-33776
 - name: Remove AJP in startup
   replace: dest=/etc/init.d/jenkins regexp='^\[ -n "\$JENKINS_AJP' replace='#[ -n "$JENKINS_AJP'
+
+- name: ensure local facts.d directory exists
+  file: path={{ role_local_facts }} state=directory mode=0755
 
 - name: Local Ansible facts
   template: src={{ role_local_facts }}/jenkins.fact dest=/{{ role_local_facts }}/jenkins.fact owner=root group=root mode=0644
@@ -53,8 +55,6 @@
 - name: create groovy init script
   action: copy src=init/HOOK.groovy dest=/var/lib/jenkins/init.groovy owner=jenkins
 
-- name: restart jenkins
-  command: service jenkins restart
 
 - name: Get the jenkins-cli jarfile from the Jenkins server.
   get_url:

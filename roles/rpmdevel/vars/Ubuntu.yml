@@ -1,0 +1,8 @@
+---
+
+# Group install in main
+packages:
+  - build-essential
+  - packaging-dev
+  - rpm 
+  - createrepo

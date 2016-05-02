@@ -1,0 +1,29 @@
+---
+
+- name: Download jetty
+  get_url: url={{ jetty_url }} dest=/tmp/jetty_{{jetty_version}}.tgz
+  tags:
+    - system
+    - jetty
+    - build
+
+- name: Extract jetty home
+  command: "tar zxf /tmp/jetty_{{jetty_version}}.tgz -C /{{ jetty_home }} --exclude='jetty-distribution-{{jetty_version}}/webapps*' --strip 1"
+  tags:
+    - system
+    - jetty
+    - build
+
+- name: Symlink init.d
+  file: src=/{{ jetty_home }}/bin/jetty.sh dest=/etc/init.d/jetty state=link mode=0755 owner=root group=root
+  tags:
+    - system
+    - jetty
+    - build
+    
+- name: Enable jetty
+  service: name=jetty enabled=yes
+  tags:
+    - system
+    - jetty
+    - build

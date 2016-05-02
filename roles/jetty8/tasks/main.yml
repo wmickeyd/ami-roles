@@ -32,30 +32,9 @@
     - jetty
     - build
 
-- name: Download jetty
-  get_url: url={{ jetty_url }} dest=/tmp/jetty_{{jetty_version}}.tgz
-  tags:
-    - system
-    - jetty
-    - build
-
-- name: Extract jetty home
-  command: "tar zxf /tmp/jetty_{{jetty_version}}.tgz -C /{{ jetty_home }} --exclude='jetty-distribution-{{jetty_version}}/webapps*' --strip 1"
-  tags:
-    - system
-    - jetty
-    - build
-
 - name: Remove jetty test apps
   file: path=/{{ jetty_home }}{{ item }} state=absent
   with_items: jetty_remove
-  tags:
-    - system
-    - jetty
-    - build
-
-- name: Symlink init.d
-  file: src=/{{ jetty_home }}/bin/jetty.sh dest=/etc/init.d/jetty state=link mode=0755 owner=root group=root
   tags:
     - system
     - jetty
@@ -92,12 +71,21 @@
     - jetty-config
     - build
 
-#- name: Enable jetty
-#  service: name=jetty enabled=yes
-#  tags:
-#    - system
-#    - jetty
-#    - build
+- name: Setup Amazon linux
+  include: Amazon.yml
+  when: ansible_distribution == 'Amazon'
+  tags:
+    - system
+    - jetty
+    - build
+
+- name: Setup Ubuntu
+  include: Ubuntu.yml
+  when: ansible_distribution == 'Ubuntu'
+  tags:
+    - system
+    - jetty
+    - build
 
 - name: Local Ansible facts
   template: src={{ role_local_facts }}/jetty8.fact dest=/{{ role_local_facts }}/jetty8.fact owner=root group=root mode=0644
