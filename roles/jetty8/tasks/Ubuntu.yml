@@ -1,0 +1,22 @@
+---
+
+- name: update apt-cache
+  apt: update_cache=yes
+  tags:
+    - system
+    - jetty
+    - build
+
+- name: Install jetty
+  package: name=jetty8 state=present
+  tags:
+    - system
+    - jetty
+    - build
+
+- name: Enable jetty
+  service: name=jetty8 enabled=yes
+  tags:
+    - system
+    - jetty
+    - build

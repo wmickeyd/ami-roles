@@ -1,57 +1,24 @@
 ---
 
-- name: add repository
-  copy: src=etc/yum.repos.d/mongo.repo dest=/etc/yum.repos.d/mongo.repo owner=root mode=0644
-  when: ansible_os_family == 'RedHat'
+- name: Setup Amazon linux
+  include: Amazon.yml
+  when: ansible_distribution == 'Amazon'
 
+- name: Setup Ubuntu
+  include: Ubuntu.yml
+  when: ansible_distribution == 'Ubuntu'
 
 - name: install mongo
   package: name=mongodb-org state=present
-  when: ansible_os_family == 'RedHat'
 
-- name: install mongo
-  package: name=mongodb-server state=present
-  when: ansible_os_family == 'Debian'
-
-- name: mongodb config
-  template: src=etc/mongodb.conf dest=/etc/mongodb.conf owner=root group=root mode=0755
-  when: ansible_os_family == 'Debian'
-  tags:
-  - system
-  - build
-  - base
-  - config
-  
 - name: listen on all interfaces
   replace: dest=/etc/mongod.conf regexp="bindIp{{':'}} 127.0.0.1.*" replace="#Listening on all ip addresses"
-  when: ansible_os_family == 'RedHat'
 
 - name: turn on replication
   replace: dest=/etc/mongod.conf regexp="^#replication{{':'}}" replace="replication{{':'}}"
-  when: ansible_os_family == 'RedHat'
-
 
 - name: name replication set
   lineinfile: dest=/etc/mongod.conf insertafter="replication{{':'}}" line=" replSetName{{':'}} "rs0""
-  when: ansible_os_family == 'RedHat'
-
-- name: listen on all interfaces
-  replace: dest=/etc/mongodb.conf regexp="bindIp{{':'}} 127.0.0.1.*" replace="#Listening on all ip addresses"
-  when: ansible_os_family == 'Debian'
-
-- name: turn on replication
-  replace: dest=/etc/mongodb.conf regexp="^#replication{{':'}}" replace="replication{{':'}}"
-  when: ansible_os_family == 'Debian'
-
-- name: name replication set
-  lineinfile: dest=/etc/mongodb.conf insertafter="replication{{':'}}" line=" replSetName{{':'}} "rs0""
-  when: ansible_os_family == 'Debian'
-  
-- name: start mongo
-  service: name=mongodb state=started enabled=yes
-  when: ansible_os_family == 'Debian'
 
 - name: start mongo
   service: name=mongod state=started enabled=yes
-  when: ansible_os_family == 'RedHat'
-

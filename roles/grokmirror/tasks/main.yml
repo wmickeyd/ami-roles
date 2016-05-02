@@ -1,6 +1,12 @@
 ---
 
-# Do some tasks
+
+- name: Install git
+  package: name=git state=present
+  tags:
+    - build
+    - system
+
 - name: Get grokmirror source
   git: repo={{ grokmirror_repo }} dest=/tmp/grokmirror
   tags:

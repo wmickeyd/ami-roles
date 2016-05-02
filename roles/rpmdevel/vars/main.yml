@@ -1,6 +1,0 @@
----
-
-# Group install in in main
-packages:
-  - createrepo
-  - rpmdevtools

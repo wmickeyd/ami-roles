@@ -7,6 +7,14 @@
   - system
   - packer
 
+- name: Install unzip
+  package: name=unzip state=present
+  when: ansible_distribution == 'Ubuntu'
+  tags:
+  - build
+  - system
+  - packer
+
 - name: Extract packer
   command: unzip /tmp/packer{{ packer_version }}.zip -d /usr/bin chdir=/tmp
   tags:
@@ -16,6 +24,7 @@
 
 - name: Move the other packer
   command: mv /usr/sbin/packer /usr/sbin/packer.bak
+  when: ansible_os_family == 'RedHat'
   tags:
   - build
   - system

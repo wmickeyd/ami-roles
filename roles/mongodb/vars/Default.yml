@@ -1,0 +1,5 @@
+---
+
+mongo_repo_destination: /etc/yum.repos.d/mongo.repo
+mongo_repo_url: https://repo.mongodb.org/yum/amazon/2013.03/mongodb-org/3.2/x86_64/
+mongo_repo_key_url: https://www.mongodb.org/static/pgp/server-3.2.asc

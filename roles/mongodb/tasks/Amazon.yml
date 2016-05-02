@@ -1,0 +1,7 @@
+---
+
+- include_vars: Default.yml
+
+- name: add repository
+  copy: src=etc/yum.repos.d/mongo.repo dest=/etc/yum.repos.d/mongo.repo owner=root mode=0644
+
