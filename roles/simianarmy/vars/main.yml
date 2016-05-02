@@ -1,0 +1,6 @@
+simian_army_sdb_domain: SIMIAN_ARMY
+simian_aws_region: us-east-1
+simian_army_timezone: America/Denver
+simian_army_location: tmp
+simian_email_source: cterry@kenzan.com
+simian_email_dest: cterry@kenzan.com
