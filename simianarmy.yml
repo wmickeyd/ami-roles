@@ -1,0 +1,15 @@
+---
+
+- hosts: 127.0.0.1
+  sudo: yes
+
+  vars:
+    ami_profile: simianarmy
+
+  roles:
+  - base
+  - devel
+  - oraclejdk8
+  - jetty9
+  - simianarmy
+  - postrun
