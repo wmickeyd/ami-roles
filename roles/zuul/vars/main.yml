@@ -1,0 +1,5 @@
+---
+
+# Zuul GitHub https://github.com/Confluex/Zuul/wiki/Installation
+zuul_url: https://github.com/confluex/Zuul/releases/download/1.5.1/zuul.war
+tomcat_home: /usr/share/tomcat7

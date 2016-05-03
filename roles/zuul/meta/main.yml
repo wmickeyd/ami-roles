@@ -1,0 +1,5 @@
+---
+
+dependencies:
+- oraclejdk8
+- tomcat7
