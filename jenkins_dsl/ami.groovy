@@ -57,7 +57,7 @@ def amis = [
                   "name":"edda",
                   "ami_profile":"edda",
                   "branch" : "master"
-		],
+		            ],
               "ami-jenkins2.0":
                 [
                   "name":"jenkins2.0",
@@ -69,12 +69,6 @@ def amis = [
                   "name":"mongodb",
                   "ami_profile":"mongodb",
                   "branch" : "master"
-                ],
-              "ami-simianarmy":
-                [
-                  "name":"simianarmy",
-                  "ami_profile":"simianarmy",
-                  "branch","master"
                 ]
             ]
 
