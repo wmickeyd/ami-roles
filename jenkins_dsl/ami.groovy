@@ -63,6 +63,12 @@ def amis = [
                   "name":"jenkins2.0",
                   "ami_profile":"jenkins2.0",
                   "branch" : "master"
+                ],		
+-              "ami-simianarmy":		
+-                [		
+-                  "name":"simianarmy",		
+-                  "ami_profile":"simianarmy",		
+-                  "branch","master"
                 ],
               "ami-mongodb":
                 [
