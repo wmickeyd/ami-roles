@@ -1,0 +1,8 @@
+---
+
+## https://nodejs.org/en/
+node_major_version: pub_4.x
+node_version: 4.4.3
+node_rpm_download_url: https://rpm.nodesource.com/{{ node_major_version }}/el/7/x86_64/nodejs-{{ node_version }}-1nodesource.el7.centos.x86_64.rpm
+
+node_tar_download_url: https://nodejs.org/dist/v{{node_version}}/node-v{{node_version}}-linux-x64.tar.gz
