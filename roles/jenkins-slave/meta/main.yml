@@ -1,0 +1,8 @@
+---
+# roles/jenkins-slave/meta/main.yml
+dependencies:
+- jenkins-user
+- nodejs
+- packer
+- ruby
+- { role: 'devel', when: ansible_os_family == 'RedHat' }

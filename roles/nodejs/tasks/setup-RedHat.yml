@@ -1,0 +1,7 @@
+---
+
+- name: Download Node repo RPM {{ node_version }}
+  get_url: url={{ node_rpm_download_url }} dest=/tmp/nodejs_repo.rpm mode=0644
+
+- name: Install nodejs_repo.rpm
+  command: rpm -i --nosignature --force /tmp/nodejs_repo.rpm
