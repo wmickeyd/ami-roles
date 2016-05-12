@@ -429,7 +429,25 @@ add_class_path "$app_home/lib/boot/org.osgi.core-6.0.0.jar"
 add_class_path "$app_home/lib/boot/org.apache.karaf.diagnostic.boot-4.0.4.jar"
 add_class_path "$app_home/lib/boot/org.apache.karaf.jaas.boot-4.0.4.jar"
 
-vmoptions_val=""
+
+## Define Heap sizes
+
+# Percent of total sytem memory to use
+xmx_percent={{ xmx_percent }}
+xms_percent={{ xms_percent }}
+
+# Total system memory available
+system_memory_in_mb=$(free -m | awk '/Mem:/ {print $2}')
+
+# Xmx
+xmx_memory_float=$(echo "$system_memory_in_mb*$xmx_percent"|bc)
+xmx_memory=$(echo "($xmx_memory_float+0.5)/1" | bc)
+
+# Xms
+xms_memory_float=$(echo "$system_memory_in_mb*$xms_percent"|bc)
+xms_memory=$(echo "($xms_memory_float+0.5)/1" | bc)
+
+vmoptions_val="-Xms${xms_memory}M -Xmx${xmx_memory}M"
 read_vmoptions "$prg_dir/$progname.vmoptions"
 INSTALL4J_ADD_VM_PARAMS="$INSTALL4J_ADD_VM_PARAMS $vmoptions_val"
 

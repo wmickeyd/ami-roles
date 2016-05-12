@@ -1,9 +1,5 @@
 ---
 
-- set_fact:
-     nexus_mem_init: "{{ (ansible_memtotal_mb*xms_percent)|int }}"
-     nexus_mem_max: "{{ (ansible_memtotal_mb*xmx_percent)|int }}"
-
 - name: Add group nexus
   group: name=nexus gid=1040 state=present
   tags:

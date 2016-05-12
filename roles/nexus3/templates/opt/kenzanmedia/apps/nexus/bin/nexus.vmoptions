@@ -1,5 +1,3 @@
--Xms{{ nexus_mem_init }}M
--Xmx{{ nexus_mem_max }}M
 -XX:+UnlockDiagnosticVMOptions
 -XX:+UnsyncloadClass
 -Djava.net.preferIPv4Stack=true
