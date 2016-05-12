@@ -1,7 +1,7 @@
 ---
 
 edda_home: "{{ kenzanmedia_apps }}/edda"
-latest_successful_build_url: "http://repo.kenzan-devops.com/nexus/content/repositories/edda/releases/edda/2.0/edda-2.0.war"
+latest_successful_build_url: "http://repo.kenzan-devops.com/repository/edda/release/edda/2.0/edda-2.0.war"
 
 # Properties file settings
 edda_region: us-east-1

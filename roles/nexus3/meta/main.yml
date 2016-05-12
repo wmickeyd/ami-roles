@@ -1,0 +1,6 @@
+---
+
+dependencies:
+- devel
+- rpmdevel
+- oraclejdk8
