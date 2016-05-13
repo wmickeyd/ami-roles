@@ -16,6 +16,12 @@ def amis = [
                   "ami_profile":"nexus",
                   "branch" : "master"
                 ],
+                "ami-nexus3":
+                [
+                  "name":"nexus3",
+                  "ami_profile":"nexus3",
+                  "branch" : "master"
+                ],
               "ami-tomcat7":
                 [ 
                   "name":"tomcat7",
