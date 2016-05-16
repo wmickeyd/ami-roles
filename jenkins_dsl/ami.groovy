@@ -16,7 +16,7 @@ def amis = [
                   "ami_profile":"nexus",
                   "branch" : "master"
                 ],
-                "ami-nexus3":
+              "ami-nexus3":
                 [
                   "name":"nexus3",
                   "ami_profile":"nexus3",
@@ -70,11 +70,11 @@ def amis = [
                   "ami_profile":"jenkins2.0",
                   "branch" : "master"
                 ],		
--              "ami-simianarmy":		
--                [		
--                  "name":"simianarmy",		
--                  "ami_profile":"simianarmy",		
--                  "branch","master"
+              "ami-simianarmy":
+                [
+                  "name":"simianarmy",
+                  "ami_profile":"simianarmy",
+                  "branch","master"
                 ],
               "ami-mongodb":
                 [
