@@ -1,0 +1,111 @@
+#!/bin/bash -x
+# launch_jenkins slaves
+# ETCD 
+#ETCD_PEERS=''
+# Move this to the job when you get mutli-region
+# Instance Size
+instance_type=t2.medium
+# user_data
+fuserdata=$$.userdata
+
+# Jenkins master
+BUILD_HOST=build.kenzan-devops.com
+
+swarm_username=jenkinsnode
+swarm_password=6ZBrfffOPq85
+
+
+# Amazon AWS 
+REGION=us-east-1
+VPC_ID=vpc-50093634
+SECURITY_GROUPS="sg-04aeec7c sg-cfaeecb7 sg-02aeec7a"
+IAM_PROFILE=jenkins_profile_name-kenzan-devops
+SSH_KEY=kenzan-devops
+SUBNET_IDS=subnet-1563e63f
+# SUBNET_IDS -- kenzan-devops.infra_public.us-east-1
+
+echo "This will launch new ASG with the current version of Jenkins slave AMI"
+
+if [[ -z "$BUILD_HOST" ]]; then
+  read -p "Jenkins master: " BUILD_HOST
+fi
+
+if [[ -z "$swarmLabel" ]]; then
+  read -p "Swarm Label (This will set the label/name of the swarm node, also used as a tag): " swarmLabel
+fi
+
+if [[ -z "$num_instances" ]]; then
+  read -p "Number of instances: " num_instances
+fi
+
+echo
+
+
+# Create userdata
+
+# Expects to additional volumes
+
+cat > $fuserdata << EOF
+#!/bin/sh
+sed -i "/xvdb/d" /etc/fstab
+umount /mnt
+/sbin/mkfs.ext4 /dev/xvdf
+/sbin/mkfs.ext4 /dev/xvdg
+mount /dev/xvdf /var/lib/jenkins
+mount /dev/xvdg /tmp
+chmod 1777 /tmp
+chown -R jenkins:jenkins /var/lib/jenkins
+sed -i "s/MYDOMAIN/$BUILD_HOST/g" /etc/default/swarm
+sed -i "s/LABEL/$swarmLabel/g" /etc/default/swarm
+start swarm
+EOF
+
+
+# Lookup AMI
+# If AMI id not provided determine what to fetch.
+# That would be either the latest snapshot or stable
+# Lookup AMI
+ami_id=ami-8f18fbe2
+
+#ami_id=$(curl -s http://$swarm_username:$swarm_password@http://build.kenzan-devops.com/job/ami-jenkins-slave/lastSuccessfulBuild/artifact/AMI-jenkins/*view*/ \
+#|grep $aws_region|awk '{print $2}'|grep ^ami-)
+
+if [[ ! "$ami_id" == *ami-* ]]; then
+  echo "Unable to lookup AMI to launch"
+fi
+
+
+# ASG name
+ASG_name=jenkins_slave_$$_${swarmLabel}_${ami_id}
+
+# Launch Config
+aws autoscaling create-launch-configuration \
+--region $REGION \
+--launch-configuration-name $ASG_name \
+--image-id $ami_id \
+--instance-type $instance_type \
+--associate-public-ip-address \
+--iam-instance-profile $IAM_PROFILE \
+--block-device-mapping "[{\"DeviceName\": \"/dev/sdf\",\"Ebs\":{\"VolumeSize\":100,\"DeleteOnTermination\": true}},{\"DeviceName\": \"/dev/sdg\",\"Ebs\":{\"VolumeSize\":40,\"DeleteOnTermination\": true}}]" \
+--key $SSH_KEY \
+--security-groups $SECURITY_GROUPS \
+--user-data file://$fuserdata
+
+
+echo "Created launch configuration Name of $ASG_name"
+
+# ASG
+echo "Creating ASG"
+aws autoscaling create-auto-scaling-group \
+--region $REGION \
+--auto-scaling-group-name $ASG_name \
+--launch-configuration-name $ASG_name \
+--min-size $num_instances \
+--max-size $num_instances \
+--desired-capacity $num_instances \
+--vpc-zone-identifier $SUBNET_IDS \
+--tags Key=Name,Value=JenkinsSlave Key=SwarmType,Value=$swarmLabel
+
+
+# Cleanup
+rm -f $fuserdata
