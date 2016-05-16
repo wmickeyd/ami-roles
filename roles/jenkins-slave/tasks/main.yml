@@ -1,0 +1,129 @@
+---
+
+
+# Include OS-specific installation tasks.
+- include: setup-RedHat.yml
+  when: ansible_os_family == 'RedHat'
+  tags:
+    - system
+    - jenkins-slave
+    - build
+
+- include: setup-Debian.yml
+  when: ansible_os_family == 'Debian'
+  tags:
+    - system
+    - jenkins-slave
+    - build
+
+- name: Sudoers.d for jenkins user
+  copy: src=etc/sudoers.d/jenkins-user dest=/etc/sudoers.d/jenkins-user mode=0440 owner=root group=root
+  tags:
+    - system
+    - jenkins-slave
+    - build
+
+- name: Permit TTY in sudoers
+  lineinfile: dest=/etc/sudoers state=absent regexp='^(.*)Default(.*)requiretty(.*)$' validate='visudo -cf %s'
+  tags:
+    - system
+    - jenkins-slave
+    - build
+
+  ##  Swarm client
+- name: Create Swarm directory
+  file: dest=/usr/share/swarm/{{ item }} state=directory mode=0755 owner=root group=root
+  with_items:
+    - lib
+    - bin
+  tags:
+    - system
+    - jenkins-slave
+    - build
+
+- name: Download Swarm Client
+  get_url: url={{ swarm_url }} dest=/usr/share/swarm/lib/swarm-client.jar owner=root group=root mode=0644
+  tags:
+    - system
+    - jenkins-slave
+    - build 
+
+- name: Swarm Upstart script
+  copy: src=etc/init/swarm.conf dest=/etc/init/swarm.conf owner=root group=root mode=0755
+  tags:
+    - system
+    - jenkins-slave
+    - build
+
+- name: Swarm global config
+  template: src=etc/default/swarm dest=/etc/default/swarm owner=root group=root mode=0644
+  tags:
+    - system
+    - jenkins-slave
+    - build
+
+  ##  Maven
+- name: Download Maven
+  get_url: url={{mvn_url}} dest=/tmp/mvn.tgz owner=root group=root mode=0644
+  tags:
+    - system
+    - jenkins-slave
+    - build
+
+- name: Maven directory
+  file: path=/usr/local/apache-maven state=directory owner=root group=root mode=0755
+  tags:
+    - system
+    - jenkins-slave
+    - build
+
+- name: Extract mvn
+  command: tar zxf /tmp/mvn.tgz --strip 1 -C /usr/local/apache-maven
+  tags:
+    - system
+    - jenkins-slave
+    - build
+
+- name: Symlink for Maven
+  file: src=/usr/local/apache-maven/bin/mvn dest=/usr/bin/mvn mode=0755 owner=root group=root state=link
+  tags:
+    - system
+    - jenkins-slave
+    - build
+
+- name: Maven path
+  template: src=etc/profile.d/jenkins.sh dest=/etc/profile.d/jenkins.sh mode=0644 owner=root group=root
+  tags:
+    - config
+    - jenkins-slave
+    - build
+
+- name: Install grunt-cli
+  command: npm install -g grunt-cli
+  tags:
+    - system
+    - jenkins-slave
+    - build
+
+- name: Install bower
+  command: npm install -g bower
+  tags:
+    - system
+    - jenkins-slave
+    - build
+
+- name: Install gulp
+  command: npm install -g gulp
+  tags:
+    - system
+    - jenkins-slave
+    - build
+
+- name: NPM install doesnt delete /tmp on successful exit. Remove any folder starting with npm- in the /tmp folder
+  cron: name="NPM install cleanup" special_time=daily job="find /tmp/ -name 'npm-*' -type d -mmin +60 -exec rm -rf {} +" user="root" cron_file=01_npm_install_cleanup_daily
+  tags:
+    - config
+    - jenkins-slave
+    - build
+
+

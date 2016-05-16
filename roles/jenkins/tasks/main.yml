@@ -1,24 +1,24 @@
 ---
 
-- name: Ensure Jenkins Yum repo present
-  get_url: url={{ jenkins_repo_url }} dest=/etc/yum.repos.d/jenkins.repo mode=0644
-  when: ansible_os_family == 'RedHat'
+- name: Setup Amazon linux
+  include: Amazon.yml
+  when: ansible_distribution == 'Amazon'
   tags:
   - system
   - jenkins
   - build
 
-- name: Add Jenkins repo GPG key
-  command: rpm --import {{ jenkins_repo_key_url }}
-  when: ansible_os_family == 'RedHat'
+
+- name: Setup Ubuntu
+  include: Ubuntu.yml
+  when: ansible_distribution == 'Ubuntu'
   tags:
   - system
   - jenkins
   - build
 
 - name: Ensure Jenkins installed
-  yum: name=jenkins state=present
-  when: ansible_os_family == 'RedHat'
+  package: name=jenkins state=present
   tags:
   - system
   - jenkins
@@ -82,14 +82,6 @@
   - jenkins-config
   - build
 
-- name: Ensure Jenkins installed
-  yum: name=maven state=present
-  when: ansible_os_family == 'RedHat'
-  tags:
-  - system
-  - jenkins
-  - maven
-  - build
 
 
 

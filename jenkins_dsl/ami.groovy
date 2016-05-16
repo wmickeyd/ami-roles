@@ -2,9 +2,10 @@
 //
 // Amazon Linux AMI ID  http://aws.amazon.com/amazon-linux-ami/
 // HVM (SSD) EBS-Backed 64-bit --  Region: US East N. Virginia
+// Ubuntu 14.04 LTS  - https://cloud-images.ubuntu.com/locator/ec2/
 // HVM (SSD) EBS-Backed 64-bit --  Region: US East N. Virginia
 // Ubuntu 14.04LTS - https://cloud-images.ubuntu.com/locator/ec2/
-def ubuntu_ami = "ami-2b594f41"
+def ubuntu_ami = "ami-fce3c696"
 def amazon_ami = "ami-60b6c60a"
 def git_repo = "https://github.com/kenzanlabs/ami-roles.git"
 
@@ -13,6 +14,12 @@ def amis = [
                 [
                   "name":"nexus",
                   "ami_profile":"nexus",
+                  "branch" : "master"
+                ],
+                "ami-nexus3":
+                [
+                  "name":"nexus3",
+                  "ami_profile":"nexus3",
                   "branch" : "master"
                 ],
               "ami-tomcat7":
@@ -56,24 +63,24 @@ def amis = [
                   "name":"edda",
                   "ami_profile":"edda",
                   "branch" : "master"
-		],
+		            ],
               "ami-jenkins2.0":
                 [
                   "name":"jenkins2.0",
                   "ami_profile":"jenkins2.0",
                   "branch" : "master"
+                ],		
+-              "ami-simianarmy":		
+-                [		
+-                  "name":"simianarmy",		
+-                  "ami_profile":"simianarmy",		
+-                  "branch","master"
                 ],
               "ami-mongodb":
                 [
                   "name":"mongodb",
                   "ami_profile":"mongodb",
                   "branch" : "master"
-                ],
-              "ami-simianarmy":
-                [
-                  "name":"simianarmy",
-                  "ami_profile":"simianarmy",
-                  "branch","master"
                 ]
             ]
 

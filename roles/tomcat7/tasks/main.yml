@@ -1,7 +1,7 @@
 ---
 
 - name: Install packages
-  yum: name={{ item }} state=latest
+  package: name={{ item }} state=latest
   with_items: packages
   notify: enable tomcat7
   when: ansible_os_family == 'RedHat'

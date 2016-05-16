@@ -78,6 +78,5 @@
   "playbook_file": "{{user `ami_profile`}}.yml",
   "group_vars": "group_vars",
   "staging_directory":"/tmp/ansible-packer"
-}
-  ]
+}]
 }

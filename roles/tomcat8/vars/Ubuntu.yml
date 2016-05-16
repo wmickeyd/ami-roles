@@ -1,0 +1,6 @@
+---
+
+tomcat_version: 8.0.33
+install_dir: /usr/share/tomcat8
+temp_dir: /tmp/tomcat-install
+download_url: http://apache.go-parts.com/tomcat/tomcat-8/v{{tomcat_version}}/bin/apache-tomcat-{{tomcat_version}}.tar.gz

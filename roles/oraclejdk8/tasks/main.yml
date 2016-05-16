@@ -3,30 +3,30 @@
 - name: Make directories
   file: path=/{{ java_home }} state=directory owner=root group=root mode=0755
   tags:
-  - system
-  - build
-  - java
+    - system
+    - build
+    - java
 
 - name: Download JDK
   command: 'wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" {{ jdk_url }} -O /tmp/jdk{{ jdk_version }}.tgz'
   tags:
-  - system
-  - build
-  - java
+    - system
+    - build
+    - java
 
 - name: Extract JDK
   command: tar zxf /tmp/jdk{{ jdk_version }}.tgz -C /{{ java_home }} --strip 1
   tags:
-  - system
-  - build
-  - java
+    - system
+    - build
+    - java
 
 - name: Symlink to default
   file: src=/{{ java_home }} dest=/{{ java_default }} state=link owner=root group=root
   tags:
-  - config
-  - build
-  - java-config
+    - config
+    - build
+    - java-config
 
 - name: Set Global Java Environment Variables
   template: src=etc/profile.d/java.sh dest=/etc/profile.d/java.sh owner=root group=root mode=0644
@@ -38,7 +38,7 @@
 - name: Local Ansible facts
   template: src={{ role_local_facts }}/oraclejdk8.fact.j2 dest=/{{ role_local_facts }}/oraclejdk8.fact owner=root group=root mode=0644
   tags:
-  - config
-  - build
-  - java-config
-  - facts
+    - config
+    - build
+    - java-config
+    - facts

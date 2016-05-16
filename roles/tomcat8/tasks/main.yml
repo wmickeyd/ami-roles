@@ -1,18 +1,17 @@
 ---
 
-- name: Install packages
-  yum: name={{ item }} state=latest
-  with_items: packages
-  notify: enable tomcat8
-  when: ansible_os_family == 'RedHat'
+- name: Setup Amazon linux
+  include: Amazon.yml
+  when: ansible_distribution == 'Amazon'
   tags:
   - system
   - tomcat8
   - build
 
-- name: copy tomcat8.conf template
-  template: src=etc/tomcat8/tomcat8.conf dest=/etc/tomcat8/tomcat8.conf owner=tomcat group=tomcat mode=0644
+- name: Setup Ubuntu
+  include: Ubuntu.yml
+  when: ansible_distribution == 'Ubuntu'
   tags:
-  - config
+  - system
   - tomcat8
   - build

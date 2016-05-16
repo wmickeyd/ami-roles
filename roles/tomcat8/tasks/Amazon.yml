@@ -1,0 +1,24 @@
+---
+
+- include_vars: Default.yml
+  tags:
+  - system
+  - tomcat8
+  - build
+
+- name: Install packages
+  package: name={{ item }} state=latest
+  with_items: packages
+  notify: enable tomcat8
+  tags:
+  - system
+  - tomcat8
+  - build
+
+- name: copy tomcat8.conf template
+  template: src=etc/tomcat8/tomcat8.conf dest=/etc/tomcat8/tomcat8.conf owner=tomcat group=tomcat mode=0644
+  tags:
+  - config
+  - tomcat8
+  - build
+
