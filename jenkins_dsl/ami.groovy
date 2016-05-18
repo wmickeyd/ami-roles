@@ -74,7 +74,7 @@ def amis = [
                 [
                   "name":"simianarmy",
                   "ami_profile":"simianarmy",
-                  "branch","master"
+                  "branch": "master"
                 ],
               "ami-mongodb":
                 [
