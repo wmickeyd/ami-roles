@@ -81,6 +81,12 @@ def amis = [
                   "name":"mongodb",
                   "ami_profile":"mongodb",
                   "branch" : "master"
+                ],
+               "ami-jenkins-slave":
+                [
+                  "name":"jenkins-slave",
+                  "ami_profile":"jenkins-slave",
+                  "branch" : "master"
                 ]
             ]
 
