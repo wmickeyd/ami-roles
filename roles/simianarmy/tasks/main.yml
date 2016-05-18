@@ -1,4 +1,5 @@
 ---
+# Note: Just edit the vars/main.yml file if you need to make any env-specific changes.
 
 - name: install git
   package: name=git state=present
@@ -27,16 +28,17 @@
     - build
     - simianarmy
 
-- name: Get the setup script
-  template: src=tmp/setupmonkeys.bash dest=/{{ simian_army_location }}/setupmonkeys.bash mode=0755
-  tags:
-    - build
-    - simianarmy
-
 - name: Get the monkeys
   command: /{{ simian_army_location }}/getmonkeys.bash
   tags:
     - system
+    - build
+    - simianarmy
+    - facts
+
+- name: Get the setup script
+  template: src=tmp/setupmonkeys.bash dest=/{{ simian_army_location }}/setupmonkeys.bash mode=0755
+  tags:
     - build
     - simianarmy
 

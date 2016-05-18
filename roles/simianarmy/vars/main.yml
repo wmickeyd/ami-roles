@@ -1,6 +1,52 @@
+#Unleash the monkeys when this is ready for prime time
+simian_army_leashed: false
+simian_army_location: tmp
+simian_email_source: no-reply@kenzan.com
 simian_army_sdb_domain: SIMIAN_ARMY
 simian_aws_region: us-east-1
 simian_army_timezone: America/Denver
-simian_army_location: tmp
-simian_email_source: cterry@kenzan.com
-simian_email_dest: cterry@kenzan.com
+#Kenzan Scratch:
+simian_email_dest: aws-scratch@kenzan.com
+simian_unowned: false
+simian_orphan_cleanup: true
+simian_orphan_age: 3
+simian_AMI_cleanup: true
+simian_AMI_discard_age: 10
+simian_is_edda_on: true
+simian_edda_endpoint: http://172.31.63.80:8080/edda/api/v2
+#Kenzan dev:
+# simian_email_dest: aws-development@kenzan.com
+# simian_unowned: false
+# simian_orphan_cleanup: true
+# simian_orphan_age: 3
+# simian_AMI_cleanup: true
+# simian_AMI_discard_age: 10
+# simian_is_edda_on: false
+# simian_edda_endpoint: http://localhost:8080/edda/api/v2
+#Kenzan test:
+# simian_email_dest: aws-test@kenzan.com
+# simian_unowned: false
+# simian_orphan_cleanup: true
+# simian_orphan_age: 3
+# simian_AMI_cleanup: true
+# simian_AMI_discard_age: 10
+# simian_is_edda_on: false
+# simian_edda_endpoint: http://localhost:8080/edda/api/v2
+#Kenzan Devops:
+# simian_email_dest: aws-devops@kenzan.com
+# simian_unowned: false
+# simian_orphan_cleanup: true
+# simian_orphan_age: 3
+# simian_AMI_cleanup: true
+# simian_AMI_discard_age: 365
+# simian_is_edda_on: true
+# simian_edda_endpoint: http://edda.kenzan-devops.com:8080/edda/api/v2
+#Kenzan Prod:
+# simian_email_dest: aws-production@kenzan.com
+# simian_unowned: false
+# simian_orphan_cleanup: true
+# simian_orphan_age: 3
+# simian_AMI_cleanup: false
+# simian_AMI_discard_age: 365
+# simian_is_edda_on: false
+# simian_edda_endpoint: http://localhost:8080/edda/api/v2
