@@ -6,7 +6,7 @@
 
 export JAVA_HOME=/{{ java_root }}/jdk8
 echo "Java home came out looking like: $JAVA_HOME"
-export WAR_LOCATION=/{{ kenzanmedia_apps }}/webapps
+export WAR_LOCATION=/{{ apps }}/webapps
 
 SIMIAN_ARMY_SDB_DOMAIN={{ simian_army_sdb_domain }}
 

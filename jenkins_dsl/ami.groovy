@@ -46,10 +46,10 @@ def amis = [
                   "ami_profile":"base",
                   "branch" : "master"
                 ],
-              "ami-karyon":
+              "ami-jservice":
                 [ 
-                  "name":"karyon",
-                  "ami_profile":"karyon",
+                  "name":"jservice",
+                  "ami_profile":"jservice",
                   "branch" : "master"
                 ],
               "ami-haproxy":

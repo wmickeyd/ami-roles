@@ -27,5 +27,5 @@ security_update_schedule: weekly
 dirs:
   - "/{{ role_local_facts }}"
   - "/etc/ansible/facts.d"
-  - "/{{ kenzanmedia_etc }}/instance_conf.d"
+  - "/{{ etc }}/instance_conf.d"
 

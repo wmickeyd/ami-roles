@@ -2,7 +2,7 @@
 <included>
 
      <appender name="GELF" class="me.moocar.logback.net.SocketEncoderAppender">
-        <remoteHost>graylogger.us-west-2.kenzanmedia.build</remoteHost>
+        <remoteHost>graylogger.${archaius.deployment.region}.${archaius.deployment.domainName}</remoteHost>
         <port>9898</port>
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <layout class="me.moocar.logbackgelf.GelfLayout">
