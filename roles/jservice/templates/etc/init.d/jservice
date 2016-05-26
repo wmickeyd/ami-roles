@@ -38,20 +38,20 @@ LOCK_FILE=/var/lock/subsys/$prog
 
 PID_FILE=/var/run/${prog}.pid
 
-KARYON_DAEMON=/usr/bin/$prog
+jServiceDaemon=/usr/bin/$prog
 
 ## Cheap work around 
 # Remove this some day
-KARYON_HOME=/{{ karyon_home }}
-KARYON_DATA=/{{ karyon_data }}
+jServiceHome=/{{ jservice_home }}
+jServiceData=/{{ jservice_data }}
 
-chown -R $USER:$USER $KARYON_HOME
-chown -R $USER:$USER $KARYON_DATA
+chown -R $USER:$USER $jServiceHome
+chown -R $USER:$USER $jServiceData
 ## end
 
 status()
 {
-PID=$(ps -ef|grep -v grep |grep server.ServerRunner|awk '{print $2}')
+PID=$(ps -ef|grep -v grep |grep java|grep jservice|awk '{print $2}')
 if [[ -n "$PID" ]];then
   echo "Service $prog Started process id: $PID"
   return 0
@@ -67,17 +67,17 @@ fi
 
 start()
 {
-if `ps -ef|grep -v grep |grep -v $KARYON_DAEMON|grep server.ServerRunner`; then
+if `ps -ef|grep -v grep |grep -v $jServiceDaemon`; then
  failure "Process already running"
 else
- /sbin/runuser - $USER -s /bin/bash -c "exec $KARYON_DAEMON &"
+ /sbin/runuser - $USER -s /bin/bash -c "exec $jServiceDaemon &"
 fi
 
 echo -n "Starting Application: "
 success "Starting Application: "
 sleep 3
 
-PID=$(ps -ef|grep -v grep |grep -v $KARYON_DAEMON|grep server.ServerRunner|awk '{print $2}')
+PID=$(ps -ef|grep -v grep |grep java|grep jservice|awk '{print $2}')
 if [[ -z "$PID" ]];then
   failure "Failed to start"
 else

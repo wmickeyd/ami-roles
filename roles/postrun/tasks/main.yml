@@ -8,7 +8,7 @@
   - postrun-config
 
 - name: AMI Profile
-  template: src={{ kenzanmedia_etc }}/ami_profile dest=/{{ kenzanmedia_etc }}/ami_profile owner=root group=root mode=0755
+  template: src={{ etc }}/ami_profile dest=/{{ etc }}/ami_profile owner=root group=root mode=0755
   tags:
   - config
   - build

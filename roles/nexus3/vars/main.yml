@@ -2,7 +2,7 @@
 
 # Nexus http://www.sonatype.org/
 nexus_url: http://download.sonatype.com/nexus/3/nexus-3.0.0-03-unix.tar.gz
-nexus_home: "{{ kenzanmedia_apps }}/nexus"
-nexus_data: "{{ kenzanmedia_data }}/nexus"
+nexus_home: "{{ apps }}/nexus"
+nexus_data: "{{ data }}/nexus"
 xms_percent: .2
 xmx_percent: .8

@@ -1,0 +1,11 @@
+---
+
+- name: restart jservice
+  service: name=jservice state=restarted
+  when: update
+
+- name: start jservice
+  service: name=jservice state=started
+
+- name: stop jservice
+  service: name=jservice state=stopped

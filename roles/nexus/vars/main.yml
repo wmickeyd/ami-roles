@@ -2,6 +2,6 @@
 
 # Nexus http://www.sonatype.org/
 nexus_url: http://www.sonatype.org/downloads/nexus-latest-bundle.tar.gz
-nexus_home: "{{ kenzanmedia_apps }}/sonatype_nexus"
-nexus_data: "{{ kenzanmedia_data }}/sonatype_nexus"
+nexus_home: "{{ apps }}/sonatype_nexus"
+nexus_data: "{{ data }}/sonatype_nexus"
 nexus_dns: repo.kenzan-devops.com

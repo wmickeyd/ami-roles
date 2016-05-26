@@ -87,7 +87,7 @@
   - instance_conf
 
 - name: instance_conf.d
-  template: src={{ kenzanmedia_etc }}/instance_conf.d/00_set_user_data dest=/{{ kenzanmedia_etc }}/instance_conf.d/00_set_user_data owner=root group=root mode=0644
+  template: src={{ etc }}/instance_conf.d/00_set_user_data dest=/{{ etc }}/instance_conf.d/00_set_user_data owner=root group=root mode=0644
   tags:
   - config
   - build
