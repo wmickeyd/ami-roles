@@ -118,7 +118,7 @@ elif [[ "$OS" == "Amazon" ]]; then
   AMI_ID=$AMAZONAMI
   single_AMI
 
-  amazon_ami_id=$(grep ',id,' $LOG | grep aws_builder | grep -w "${REGION}" | cut -d':' -f2);
+  amazon_ami_id=$(grep ',id,' $LOG | grep hvm_builder | grep -w "${REGION}" | cut -d':' -f2);
 
   if [[ ! "$amazon_ami_id" == *ami-* ]];then
     echo "Build error"
