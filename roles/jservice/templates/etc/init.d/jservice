@@ -1,0 +1,131 @@
+#!/bin/bash
+#
+# karyon
+#
+# chkconfig: 2345 80 80
+# description: Karyon Daemon
+#
+# processname: karyon
+
+# pidfile: /var/run/karyon.pid
+
+### BEGIN INIT INF
+# Provides: karyon
+# Required-Start: $local_fs $network $syslog instance_conf
+# Required-Stop: $local_fs $syslog
+# Should-Stop: $network $syslog
+# Default-Start: 
+# Default-Stop: 0 1 6
+# Short-Description: Start up the karyon service
+# Description: Runs a wrapper for a wrapper the Java way to start Karyon Jar
+### END INIT INFO
+
+# source function library
+. /etc/rc.d/init.d/functions
+
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root" 1>&2
+   exit 1
+fi
+
+prog=karyon
+USER=karyon
+
+
+RETVAL=0
+
+LOCK_FILE=/var/lock/subsys/$prog
+
+PID_FILE=/var/run/${prog}.pid
+
+jServiceDaemon=/usr/bin/$prog
+
+## Cheap work around 
+# Remove this some day
+jServiceHome=/{{ jservice_home }}
+jServiceData=/{{ jservice_data }}
+
+chown -R $USER:$USER $jServiceHome
+chown -R $USER:$USER $jServiceData
+## end
+
+status()
+{
+PID=$(ps -ef|grep -v grep |grep java|grep jservice|awk '{print $2}')
+if [[ -n "$PID" ]];then
+  echo "Service $prog Started process id: $PID"
+  return 0
+elif [[ -f $PID_FILE ]];then
+  echo "Service $prog not running but pid file exists. Perhaps it crashed"
+  return 1
+else
+  echo "Service not started"
+  return 0
+fi
+
+}
+
+start()
+{
+if `ps -ef|grep -v grep |grep -v $jServiceDaemon`; then
+ failure "Process already running"
+else
+ /sbin/runuser - $USER -s /bin/bash -c "exec $jServiceDaemon &"
+fi
+
+echo -n "Starting Application: "
+success "Starting Application: "
+sleep 3
+
+PID=$(ps -ef|grep -v grep |grep java|grep jservice|awk '{print $2}')
+if [[ -z "$PID" ]];then
+  failure "Failed to start"
+else
+  touch $LOCK_FILE
+  echo $PID > $PID_FILE
+fi
+}
+
+
+stop() {
+  echo -n "Stopping $prog: "
+
+  if  [[ -f $PID_FILE ]]; then
+    PID=`cat $PID_FILE`
+    kill -9 $PID
+    sleep 2
+    if ! `ps -ef|grep -v grep|grep $PID`; then
+      rm -f $PID_FILE
+      rm -f $LOCK_FILE
+     success "Stopped $prog: "
+    else 
+      failure "service failed to stop"
+    fi
+  else
+    failure "pidfile not found"
+  fi
+}
+
+
+restart() {
+  stop
+  start
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  status)
+    status
+    ;;
+  restart)
+    restart
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart}"
+    exit 1
+esac

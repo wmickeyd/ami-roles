@@ -16,6 +16,12 @@ def amis = [
                   "ami_profile":"nexus",
                   "branch" : "master"
                 ],
+              "ami-nexus3":
+                [
+                  "name":"nexus3",
+                  "ami_profile":"nexus3",
+                  "branch" : "master"
+                ],
               "ami-tomcat7":
                 [ 
                   "name":"tomcat7",
@@ -46,10 +52,10 @@ def amis = [
                   "ami_profile":"base",
                   "branch" : "master"
                 ],
-              "ami-karyon":
+              "ami-jservice":
                 [ 
-                  "name":"karyon",
-                  "ami_profile":"karyon",
+                  "name":"jservice",
+                  "ami_profile":"jservice",
                   "branch" : "master"
                 ],
               "ami-haproxy":
@@ -63,17 +69,29 @@ def amis = [
                   "name":"edda",
                   "ami_profile":"edda",
                   "branch" : "master"
-		],
+		            ],
               "ami-jenkins2.0":
                 [
                   "name":"jenkins2.0",
                   "ami_profile":"jenkins2.0",
                   "branch" : "master"
+                ],		
+              "ami-simianarmy":
+                [
+                  "name":"simianarmy",
+                  "ami_profile":"simianarmy",
+                  "branch": "master"
                 ],
               "ami-mongodb":
                 [
                   "name":"mongodb",
                   "ami_profile":"mongodb",
+                  "branch" : "master"
+                ],
+               "ami-jenkins-slave":
+                [
+                  "name":"jenkins-slave",
+                  "ami_profile":"jenkins-slave",
                   "branch" : "master"
                 ]
             ]

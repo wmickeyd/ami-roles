@@ -1,0 +1,7 @@
+/{{ jservice_data}}/logs/jservice.log { 
+  rotate 10
+  compress 
+  missingok 
+  size 100M
+  copytruncate
+}

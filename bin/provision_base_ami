@@ -93,23 +93,82 @@ double_AMI () {
 
 }
 
+
 if [[ "$OS" == "Ubuntu" ]]; then
   SSH_USERNAME=ubuntu
   AMI_ID=$UBUNTUAMI
   single_AMI
+
+  ubuntu_ami_id=$(grep ',id,' $LOG | grep hvm_builder | grep -w "${REGION}" | cut -d':' -f2);
+  if [[ ! "$ubuntu_ami_id" == *ami-* ]];then
+    echo "Build error"
+    err=1
+
+  elif grep --quiet 'FATAL\|ERROR' $LOG; then
+    echo "Ansible error"
+    echo "Cleaning up, sorry for the delay"
+    aws ec2 deregister-image --image-id $ubuntu_ami_id
+    err=2
+  else
+    echo "Ubuntu" $REGION $ubuntu_ami_id >> $WORKSPACE/AMI-$AMI_PROFILE
+  fi
+
 elif [[ "$OS" == "Amazon" ]]; then 
   SSH_USERNAME=ec2-user
   AMI_ID=$AMAZONAMI
   single_AMI
+
+  amazon_ami_id=$(grep ',id,' $LOG | grep hvm_builder | grep -w "${REGION}" | cut -d':' -f2);
+
+  if [[ ! "$amazon_ami_id" == *ami-* ]];then
+    echo "Build error"
+    err=1
+
+  elif grep --quiet 'FATAL\|ERROR' $LOG; then
+    echo "Ansible error"
+    echo "Cleaning up, sorry for the delay"
+    aws ec2 deregister-image --image-id $amazon_ami_id
+    err=2
+  else
+    echo "Amazon" $REGION $amazon_ami_id >> $WORKSPACE/AMI-$AMI_PROFILE
+  fi
+
 else 
   UBUNTU_SSH=ubuntu
   AMAZON_SSH=ec2-user
   double_AMI
+  ubuntu_ami_id=$(grep ',id,' $LOG | grep hvm_builder | grep -w "${REGION}" | cut -d':' -f2);
+  amazon_ami_id=$(grep ',id,' $LOG | grep aws_builder | grep -w "${REGION}" | cut -d':' -f2);
+
+  if [[ ! "$amazon_ami_id" == *ami-* ]] || [[! "$ubuntu_ami_id" == *ami-* ]];then
+    echo "Build error"
+    err=1
+
+  elif grep --quiet 'FATAL\|ERROR' $LOG; then
+    echo "Ansible error"
+    echo "Cleaning up, sorry for the delay"
+    aws ec2 deregister-image --image-id $ubuntu_ami_id
+    aws ec2 deregister-image --image-id $amazon_ami_id
+
+    err=2
+  else
+    echo "Ubuntu" $REGION $ubuntu_ami_id >> $WORKSPACE/AMI-$AMI_PROFILE
+    echo "Amazon" $REGION $amazon_ami_id >> $WORKSPACE/AMI-$AMI_PROFILE
+  fi
+
 fi
 
 # Output facts to the artifact
-grep 'AMIs were created' $LOG | grep -v arti | grep -v grep | cut -d':' -f4 > AMI-$AMI_PROFILE
+#grep 'AMIs were created' $LOG | grep -v arti | grep -v grep | cut -d':' -f4 > AMI-$AMI_PROFILE
 echo "" >> AMI-$AMI_PROFILE
 grep 'Creating the AMI' $LOG|cut -d':' -f3 >> AMI-$AMI_PROFILE
-echo "" >> AMI-$AMI_PROFILE
-grep ',id,' $LOG |cut -d',' -f6 >> AMI-$AMI_PROFILE
+# echo "" >> AMI-$AMI_PROFILE
+# grep ',id,' $LOG |cut -d',' -f6 >> AMI-$AMI_PROFILE
+
+
+if [ -n "$err" ];then
+  echo "Build Failed"
+  exit $err
+else
+  echo "Build Successful"
+fi

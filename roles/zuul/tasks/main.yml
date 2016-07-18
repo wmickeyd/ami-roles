@@ -1,0 +1,43 @@
+---
+
+- name: Stopping tomcat7 service
+  service: name=tomcat7 state=stopped
+  tags:
+    - system
+    - zuul
+    - build
+
+- name: Download Zuul from GitHub
+  get_url: url={{ zuul_url }} dest={{ tomcat_home }}/webapps/zuul.war owner=root group=tomcat
+  tags:
+    - system
+    - zuul
+    - build
+
+- name: Create Zuul directory
+  file: path={{ tomcat_home }}/webapps/zuul state=directory owner=root group=tomcat
+  tags:
+    - system
+    - zuul 
+    - build
+
+- name: Unpack Zuul war
+  command: "/{{ java_default }}/bin/jar xvf {{ tomcat_home }}/webapps/zuul.war chdir={{ tomcat_home }}/webapps/zuul"
+  tags:
+    - system
+    - zuul 
+    - build
+
+- name: Copy Zuul config files into Jetty classpath
+  copy: src={{ tomcat_home }}/webapps/zuul/WEB-INF/classes/examples/ dest={{ tomcat_home }}/lib
+  tags:
+    - system
+    - zuul
+    - build
+
+- name: Start tomcat7 service
+  service: name=tomcat7 state=started
+  tags:
+    - system
+    - zuul
+    - build

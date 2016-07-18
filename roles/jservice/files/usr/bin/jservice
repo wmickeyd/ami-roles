@@ -1,0 +1,6 @@
+#!/bin/bash
+
+. /etc/default/jservice
+
+cd $jServiceHome
+$JAVA_CMD -jar jservice.jar $JAVA_OPTIONS 2>&1 | tee -a $LOG_FILE > /dev/null 

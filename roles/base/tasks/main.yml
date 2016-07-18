@@ -6,7 +6,6 @@
   tags:
   - system
   - build
-  - packages
   - base
 
 - name: Update system packages
@@ -15,12 +14,31 @@
   tags:
   - system
   - build
+  - base
+
+- name: Install packages RedHat
+  yum: name={{ item }} state=latest enablerepo=epel
+  with_items: '{{packages}}'
+  when: ansible_os_family == 'RedHat'
+  tags:
+  - system
+  - build
   - packages
   - base
-  
+
+- name: Install packages for Ubuntu
+  apt: name={{ item }} state=latest force=yes
+  with_items: '{{packages}}'
+  when: ansible_os_family == 'Debian'
+  tags:
+  - system
+  - build
+  - packages
+  - base
+
 - name: Create directories
   file: path={{ item }} state=directory owner=root group=root mode=0755
-  with_items: dirs
+  with_items: '{{dirs}}'
   tags:
   - system
   - build
@@ -69,7 +87,7 @@
   - instance_conf
 
 - name: instance_conf.d
-  template: src={{ kenzanmedia_etc }}/instance_conf.d/00_set_user_data dest=/{{ kenzanmedia_etc }}/instance_conf.d/00_set_user_data owner=root group=root mode=0644
+  template: src={{ etc }}/instance_conf.d/00_set_user_data dest=/{{ etc }}/instance_conf.d/00_set_user_data owner=root group=root mode=0644
   tags:
   - config
   - build

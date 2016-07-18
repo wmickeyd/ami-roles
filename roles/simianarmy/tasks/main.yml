@@ -1,0 +1,71 @@
+---
+# Note: Just edit the vars/main.yml file if you need to make any env-specific changes.
+
+- name: install git
+  package: name=git state=present
+  tags:
+    - system
+    - build
+    - simianarmy
+
+- name: pip install awscli
+  pip: name=awscli
+  tags:
+    - system
+    - build
+    - simianarmy
+
+- name: SimianArmy directory
+  file: dest=/{{ simian_army_location }} state=directory
+  tags:
+    - system
+    - build
+    - simianarmy
+
+- name: Get the getmonkeys script
+  template: src=tmp/getmonkeys.bash dest=/{{ simian_army_location }}/getmonkeys.bash mode=0755
+  tags:
+    - build
+    - simianarmy
+
+- name: Get the monkeys
+  command: /{{ simian_army_location }}/getmonkeys.bash
+  tags:
+    - system
+    - build
+    - simianarmy
+    - facts
+
+- name: Get the setup script
+  template: src=tmp/setupmonkeys.bash dest=/{{ simian_army_location }}/setupmonkeys.bash mode=0755
+  tags:
+    - build
+    - simianarmy
+
+- name: Get Kenzan monkey Configuration
+  template: src=roles/simianarmy/templates/SimianArmy/{{ item }} dest=/{{ simian_army_location }}/SimianArmy/src/main/resources/ owner=root mode=0644
+  with_items:
+    - chaos.properties
+    - client.properties
+    - conformity.properties
+    - janitor.properties
+    - log4j.properties
+    - simianarmy.properties
+    - volumeTagging.properties
+  tags:
+    - config
+    - build
+    - simianarmy
+
+- name: Setup the Simian Army
+  command: /{{ simian_army_location }}/setupmonkeys.bash
+  tags:
+    - system
+    - build
+    - simianarmy
+
+- name: Unleash the flying monkeys
+  service: name=jetty enabled=yes state=restarted
+  tags:
+    - system
+    - simianarmy

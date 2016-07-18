@@ -1,0 +1,14 @@
+---
+
+
+# https://wiki.jenkins-ci.org/display/JENKINS/Swarm+Plugin
+# 1.16
+swarm_version: 2.0
+swarm_url: http://maven.jenkins-ci.org/content/repositories/releases/org/jenkins-ci/plugins/swarm-client/{{ swarm_version }}/swarm-client-{{ swarm_version }}-jar-with-dependencies.jar
+
+# http://maven.apache.org/download.cgi
+mvn_url: http://apache.mirrors.hoobly.com/maven/maven-3/3.3.3/binaries/apache-maven-3.3.3-bin.tar.gz
+
+
+swarm_username: jenkinsnode
+swarm_password: 6ZBrfffOPq85

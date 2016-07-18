@@ -1,0 +1,10 @@
+---
+
+jservice_home: "{{ apps }}/jservice"
+jservice_data: "{{ data }}/jservice"
+
+# Percent of total system memory to allocate to JVM Xmx
+xmx_percent: .8
+# New size
+xms_percent: .2
+

@@ -1,0 +1,16 @@
+---
+
+- name: Download node {{ node_version }}
+  command: wget --no-check-certificate {{node_tar_download_url}} -O /tmp/node.tar.gz
+
+- name: Extract node
+  command: tar zxf /tmp/node.tar.gz --strip 1 -C /usr/local/
+
+- name: folder permissions for /usr/local/
+  file: path=/usr/local/ state=directory owner=root group=root
+
+- name: Symlink for npm
+  file: src=/usr/local/bin/npm dest=/usr/bin/npm mode=0755 owner=root group=root state=link
+
+- name: Symlink for node
+  file: src=/usr/local/bin/node dest=/usr/bin/node mode=0755 owner=root group=root state=link

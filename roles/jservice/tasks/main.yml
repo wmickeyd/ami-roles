@@ -1,0 +1,91 @@
+---
+
+- name: Add group jservice
+  group: name=jservice gid=1771 state=present
+  tags:
+    - system
+    - jservice-user
+    - build
+
+- name: Add  user jservice
+  user: name=jservice comment="Java Service Daemon" shell=/bin/bash uid=1771 group=jservice state=present
+  tags:
+    - system
+    - jservice-user
+    - build
+
+- name: Create directories
+  file: dest=/{{ item }} state=directory mode=0755 owner=jservice group=jservice
+  with_items:
+    - "{{ jservice_data }}"
+    - "{{ jservice_data }}/logs"
+  tags:
+    - system
+    - jservice
+    - build
+
+- name: Symlink jetty_logs
+  file: src=/{{ jservice_data }}/logs dest=/var/log/jservice owner=jservice group=jservice state=link
+  tags:
+    - system
+    - jetty
+    - build
+
+- name: Copy jservice wrapper
+  copy: src=usr/bin/jservice dest=/usr/bin/jservice owner=root group=root mode=0755
+  notify:
+    - restart jservice
+  tags:
+    - jservice
+    - config
+    - build
+
+- name: Create jservice init.d
+  template: src=etc/init.d/jservice dest=/etc/init.d/jservice owner=root group=root mode=0755
+  notify:
+    - restart jservice
+  tags:
+    - jservice
+    - system
+    - build
+
+- name: Create jservice defaults
+  template: src=etc/default/jservice dest=/etc/default/jservice owner=root group=root mode=0644
+  notify:
+    - restart jservice
+  tags:
+    - jservice
+    - config
+    - build
+
+- name: Create logback defaults
+  template: src=etc/default/logback.xml dest=/etc/default/logback.xml owner=root group=root mode=0644
+  notify:
+    - restart jservice
+  tags:
+    - logback
+    - config
+    - build
+
+- name: Copy jservice logrotate.d
+  template: src=etc/logrotate.d/jservice dest=/etc/logrotate.d/jservice owner=root group=root mode=0755
+  tags:
+    - jservice
+    - config
+    - build
+
+- name: Enable jservice
+  service: name=jservice enabled=yes
+  tags:
+    - build
+
+
+#- name: Configure Security limits soft
+#  lineinfile: dest=/etc/security/limits.conf line='jservice soft nofile 65535' regexp='^#\ End\ of\ file(.*)' insertafter='^# End of file' state=present
+#  tags:
+#    - build
+
+#- name: Configure Security limits hard 
+#  lineinfile: dest=/etc/security/limits.conf line='jservice hard nofile 65535' regexp='^#\ End\ of\ file(.*)' insertafter='^# End of file' state=present
+#  tags:
+#    - build

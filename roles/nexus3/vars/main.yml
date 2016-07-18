@@ -1,0 +1,8 @@
+---
+
+# Nexus http://www.sonatype.org/
+nexus_url: http://download.sonatype.com/nexus/3/nexus-3.0.0-03-unix.tar.gz
+nexus_home: "{{ apps }}/nexus"
+nexus_data: "{{ data }}/nexus"
+xms_percent: .2
+xmx_percent: .8

@@ -1,0 +1,15 @@
+---
+
+- name: restart nexus
+  service: name=nexus state=restarted
+  when: update
+
+- name: reload nexus
+  command: service nexus force-reload
+  when: update
+
+- name: start nexus
+  service: name=nexus state=started
+
+- name: stop nexus
+  service: name=nexus state=stopped

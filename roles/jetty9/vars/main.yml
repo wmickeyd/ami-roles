@@ -5,10 +5,10 @@ jetty_version: 9.3.8.v20160314
 jetty_url: http://download.eclipse.org/jetty/{{ jetty_version }}/dist/jetty-distribution-{{ jetty_version }}.tar.gz
 
 # FS vars
-jetty_home: "{{ kenzanmedia_apps }}/jetty9"
-jetty_data: "{{ kenzanmedia_data }}/jetty9"
+jetty_home: "{{ apps }}/jetty9"
+jetty_data: "{{ data }}/jetty9"
 jetty_logs: "{{ jetty_data }}/logs"
-jetty_webapps: "{{ kenzanmedia_apps }}/webapps"
+jetty_webapps: "{{ apps }}/webapps"
 
 # Jetty files to remove
 jetty_remove:

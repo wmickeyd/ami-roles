@@ -1,7 +1,0 @@
-/{{ karyon_data}}/logs/karyon.log { 
-  rotate 10
-  compress 
-  missingok 
-  size 100M
-  copytruncate
-}

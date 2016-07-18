@@ -1,0 +1,44 @@
+---
+
+- name: Install Debian Packages
+  package: name={{item}} state=latest
+  with_items:
+    - openjdk-6-jre-headless 
+    - xfonts-100dpi
+    - xfonts-75dpi
+    - xfonts-scalable
+    - xfonts-cyrillic
+    - xvfb
+    - xserver-xorg-core
+    - libxss1 
+    - libappindicator1 
+    - libindicator7
+    - python-apt
+    - python-pip
+    - git
+    - lftp
+    - yum
+    - unzip
+    - openjdk-7-jdk
+
+
+- name: Apt key for Google
+  apt_key: url=https://dl-ssl.google.com/linux/linux_signing_key.pub state=present
+
+- name: Add Apt repo for Google
+  apt_repository: repo='deb http://dl.google.com/linux/deb stable main' state=present  
+
+- name: Install Chrome
+  package: name=google-chrome-stable state=latest
+
+- name: Add Apt repo for Firefox
+  apt_repository: repo='deb http://ppa.launchpad.net/mozillateam/firefox-next/ubuntu trusty main' state=present  
+
+- name: apt-get update
+  command: apt-get update
+
+- name: Install Firefox
+  apt: name=firefox state=latest force=yes
+
+- name: Set Cron
+  cron: name="RunXFB As Jenkins" special_time=reboot job='su - jenkins -s /bin/bash -c "nohup Xvfb :1 -screen 0 1920x1080x24 > /dev/null 2>&1 & echo $!"' user=root
